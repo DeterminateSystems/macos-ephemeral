@@ -26,18 +26,6 @@ fi
 
 export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
 
-if [ ! -e /etc/static/bashrc ]; then
-	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 
-fi
-
-if ! hash darwin-rebuild; then
-  set +eux
-  . /etc/static/bashrc
-  set -eux
-fi
-
-export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
-
 if [ ! -d /nix/home ]; then
     mkdir -p /nix/home
 fi
@@ -52,6 +40,18 @@ fi
 
 cd /nix/home/darwin-config
 nix-shell -p git --run "git fetch origin && git checkout origin/HEAD"
+
+if [ ! -e /etc/static/bashrc ]; then
+	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 
+fi
+
+if ! hash darwin-rebuild; then
+  set +eux
+  . /etc/static/bashrc
+  set -eux
+fi
+
+export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
 
 sudo rm /etc/nix/nix.conf || true
 # echo hi > /root/buildkite.token
