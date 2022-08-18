@@ -20,6 +20,7 @@
     openssh.privateKeyPath = "/dev/null";
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
+    dataDir = "/nix/buildkite/";
   };
 
   
