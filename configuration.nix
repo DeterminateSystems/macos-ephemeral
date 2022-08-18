@@ -41,8 +41,8 @@
     
     StandardErrorPath = lib.mkForce "/tmp/buildkite-agent.log";
     StandardOutPath = lib.mkForce "/tmp/buildkite-agent.log";
-    Program = lib.mkForce "${pkgs.buildkite-agent}";
-    ProgramArguments = lib.mkForce ["${pkgs.buildkite-agent}" "start"];
+    Program = lib.mkForce "${pkgs.buildkite-agent}/bin/buildkite-agent";
+    ProgramArguments = lib.mkForce ["${pkgs.buildkite-agent}/bin/buildkite-agent" "start"];
   };
   
   launchd.daemons.prometheus-node-exporter = {
