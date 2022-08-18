@@ -16,6 +16,8 @@
   users.knownGroups = [ "buildkite-agent" ];
   users.groups.buildkite-agent.gid = 531;
   users.users.buildkite-agent.uid = 531;
+  users.users.buildkite-agent.gid = config.users.groups.buildkite-agent.gid;
+
 
   services.nix-daemon.enable = true;
   
