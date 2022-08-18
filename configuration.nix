@@ -35,6 +35,12 @@
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
   };
+  system.activationScripts.preActivation.text = ''
+      mkdir -p '${config.users.users.buildkite-agent.home}'
+      chown ${toString config.users.users.buildkite-agent.uid}:${toString config.users.users.buildkite-agent.gid} '${config.users.users.buildkite-agent.home}'
+  '';
+
+  
   #launchd.daemons.buildkite-agent.serviceConfig = {
   #  RunAtLoad = true;
   #  OnDemand = false;
