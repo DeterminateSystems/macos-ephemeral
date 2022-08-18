@@ -22,7 +22,11 @@
 
   services.nix-daemon.enable = true;
   
-  nix.nixPath = [ "nixpkgs=channel:nixpkgs-unstable" ];
+  nix.nixPath = [
+    "nixpkgs=channel:nixpkgs-unstable"
+    "darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz"
+    "darwin-config=/nix/home/darwin-config/configuration.nix"
+  ];
   
   services.buildkite-agent = {
     enable = true;
