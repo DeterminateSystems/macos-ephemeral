@@ -13,4 +13,6 @@
   #services.activate-system.enable = true;
 
   services.nix-daemon.enable = true;
+  
+  nix.nixPath = [ "nixpkgs=channel:nixpkgs-unstable" ];
 }
