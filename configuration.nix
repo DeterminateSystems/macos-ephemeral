@@ -14,6 +14,8 @@
 
   services.nix-daemon.enable = true;
   
+  nix.nixPath = [ "nixpkgs=channel:nixpkgs-unstable" ];
+  
   services.buildkite-agent = {
     enable = true;
     extraConfig = "yolo=1";
@@ -22,10 +24,12 @@
     tokenPath = "/nix/home/buildkite.token";
     dataDir = "/nix/buildkite/";
   };
-
+  launchd.daemons.buildkite-agent.serviceConfig = {
+    StandardErrorPath = lib.mkForce "/var/log/buildkite-agent.log";
+    StandardOutPath = lib.mkForce "/var/log/buildkite-agent.log";
+  };
   
-  nix.nixPath = [ "nixpkgs=channel:nixpkgs-unstable" ];
-    launchd.daemons.prometheus-node-exporter = {
+  launchd.daemons.prometheus-node-exporter = {
     script = ''
       exec ${pkgs.prometheus-node-exporter}/bin/node_exporter
     '';
