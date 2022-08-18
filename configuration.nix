@@ -39,8 +39,8 @@
     RunAtLoad = true;
     OnDemand = false;
     
-    StandardErrorPath = lib.mkForce "/tmp/buildkite-agent.log";
-    StandardOutPath = lib.mkForce "/tmp/buildkite-agent.log";
+    StandardErrorPath = lib.mkForce "/var/lib/buildkite-agent/buildkite-agent.log";
+    StandardOutPath = lib.mkForce "/var/lib/buildkite-agent/buildkite-agent.log";
     Program = lib.mkForce "${pkgs.buildkite-agent}/bin/buildkite-agent";
     ProgramArguments = lib.mkForce ["${pkgs.buildkite-agent}/bin/buildkite-agent" "start"];
   };
