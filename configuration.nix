@@ -30,7 +30,7 @@
   
   services.buildkite-agent = {
     enable = true;
-    extraConfig = "yolo=1";
+    meta-data = "mac=1";
     openssh.privateKeyPath = "/dev/null";
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
