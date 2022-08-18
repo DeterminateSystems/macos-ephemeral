@@ -19,9 +19,9 @@ if [ ! -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
 fi
 
 if ! hash nix; then
-	set +u
+	set +eux
 	. '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-    set -u
+    set -eux
 fi
 
 export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
@@ -31,7 +31,9 @@ if [ ! -e /etc/static/bashrc ]; then
 fi
 
 if ! hash darwin-rebuild; then
+  set +eux
   . /etc/static/bashrc
+  set -eux
 fi
 
 export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
@@ -39,6 +41,8 @@ export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=
 if [ ! -d /nix/home ]; then
     mkdir -p /nix/home
 fi
+
+export HOME=/nix/home
 
 nix-shell -p git 2>&1 | tail -n5
 if [ ! -d /nix/home/darwin-config ]; then
