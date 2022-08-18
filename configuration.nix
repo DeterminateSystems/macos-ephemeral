@@ -17,6 +17,7 @@
   users.groups.buildkite-agent.gid = 531;
   users.users.buildkite-agent.uid = 531;
   users.users.buildkite-agent.gid = config.users.groups.buildkite-agent.gid;
+  users.users.buildkite-agent.shell = "/bin/sh";
 
 
   services.nix-daemon.enable = true;
