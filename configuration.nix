@@ -15,4 +15,13 @@
   services.nix-daemon.enable = true;
   
   nix.nixPath = [ "nixpkgs=channel:nixpkgs-unstable" ];
+    launchd.daemons.prometheus-node-exporter = {
+    script = ''
+      exec ${pkgs.prometheus-node-exporter}/bin/node_exporter
+    '';
+
+    serviceConfig.KeepAlive = true;
+    serviceConfig.StandardErrorPath = "/var/log/prometheus-node-exporter.log";
+    serviceConfig.StandardOutPath = "/var/log/prometheus-node-exporter.log";
+  };
 }
