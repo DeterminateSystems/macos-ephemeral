@@ -14,6 +14,16 @@
 
   services.nix-daemon.enable = true;
   
+  services.buildkite-agent = {
+    enable = true;
+    package = buildkite-agent;
+    extraConfig = "yolo=1";
+    openssh.privateKeyPath = "/dev/null";
+    openssh.publicKeyPath = "/dev/null";
+    tokenPath = "/nix/home/buildkite.token";
+  };
+
+  
   nix.nixPath = [ "nixpkgs=channel:nixpkgs-unstable" ];
     launchd.daemons.prometheus-node-exporter = {
     script = ''
