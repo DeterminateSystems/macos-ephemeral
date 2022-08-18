@@ -2,6 +2,8 @@
 
 set -eux
 
+BUILDKITE_TOKEN="$1"
+
 cd /tmp
 
 while ! ping -c1 hydra.nixos.org; do
@@ -42,6 +44,11 @@ fi
 cd /nix/home/darwin-config
 nix-shell -p git --run "git fetch origin && git checkout origin/HEAD"
 
+touch /nix/home/buildkite.token
+chown 531:531 /nix/home/buildkite.token
+chmod 0600 /nix/home/buildkite.token
+echo "$BUILDKITE_TOKEN" > /nix/home/buildkite.token
+
 if [ ! -e /etc/static/bashrc ]; then
 	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer  2>&1 | tail -n20
 fi
@@ -58,6 +65,8 @@ sudo rm /etc/nix/nix.conf || true
 # echo hi > /root/buildkite.token
 
 darwin-rebuild switch
+
+
 
 echo "Done!"
 
