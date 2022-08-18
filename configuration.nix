@@ -29,10 +29,10 @@
     tokenPath = "/nix/home/buildkite.token";
     dataDir = "/nix/buildkite/";
   };
-  launchd.daemons.buildkite-agent.serviceConfig = {
-    StandardErrorPath = lib.mkForce "/var/log/buildkite-agent.log";
-    StandardOutPath = lib.mkForce "/var/log/buildkite-agent.log";
-  };
+  #launchd.daemons.buildkite-agent.serviceConfig = {
+    #StandardErrorPath = lib.mkForce "/var/log/buildkite-agent.log";
+    #StandardOutPath = lib.mkForce "/var/log/buildkite-agent.log";
+  #};
   
   launchd.daemons.prometheus-node-exporter = {
     script = ''
