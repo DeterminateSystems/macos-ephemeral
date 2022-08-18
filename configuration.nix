@@ -11,6 +11,9 @@
   programs.bash.enableCompletion = false;
 
   #services.activate-system.enable = true;
+  
+  users.knownUsers = [ "buildkite-agent" ];
+  users.knownGroups = [ "buildkite-agent" ];
 
   services.nix-daemon.enable = true;
   
