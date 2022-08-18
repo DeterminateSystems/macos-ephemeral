@@ -27,7 +27,7 @@
     openssh.privateKeyPath = "/dev/null";
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
-    dataDir = "/nix/buildkite/";
+    dataDir = "/nix/buildkite";
   };
   #launchd.daemons.buildkite-agent.serviceConfig = {
     #StandardErrorPath = lib.mkForce "/var/log/buildkite-agent.log";
