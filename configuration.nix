@@ -35,15 +35,15 @@
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
   };
-  launchd.daemons.buildkite-agent.serviceConfig = {
-    RunAtLoad = true;
-    OnDemand = false;
-    
-    StandardErrorPath = lib.mkForce "/var/lib/buildkite-agent/buildkite-agent.log";
-    StandardOutPath = lib.mkForce "/var/lib/buildkite-agent/buildkite-agent.log";
-    Program = lib.mkForce "${pkgs.buildkite-agent}/bin/buildkite-agent";
-    ProgramArguments = lib.mkForce ["${pkgs.buildkite-agent}/bin/buildkite-agent" "start"];
-  };
+  #launchd.daemons.buildkite-agent.serviceConfig = {
+  #  RunAtLoad = true;
+  #  OnDemand = false;
+  #  
+  #  StandardErrorPath = lib.mkForce "/var/lib/buildkite-agent/buildkite-agent.log";
+  #  StandardOutPath = lib.mkForce "/var/lib/buildkite-agent/buildkite-agent.log";
+  #  Program = lib.mkForce "${pkgs.buildkite-agent}/bin/buildkite-agent";
+  #  ProgramArguments = lib.mkForce ["${pkgs.buildkite-agent}/bin/buildkite-agent" "start"];
+  #};
   
   launchd.daemons.prometheus-node-exporter = {
     script = ''
