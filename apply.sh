@@ -43,7 +43,7 @@ cd /nix/home/darwin-config
 nix-shell -p git --run "git fetch origin && git checkout origin/HEAD"
 
 if [ ! -e /etc/static/bashrc ]; then
-	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer  2>&1 | tail -n5
+	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer  2>&1 | tail -n20
 fi
 
 if ! hash darwin-rebuild; then
