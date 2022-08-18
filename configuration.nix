@@ -16,7 +16,6 @@
   
   services.buildkite-agent = {
     enable = true;
-    package = buildkite-agent;
     extraConfig = "yolo=1";
     openssh.privateKeyPath = "/dev/null";
     openssh.publicKeyPath = "/dev/null";
