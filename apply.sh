@@ -56,7 +56,7 @@ chmod 0600 /nix/home/tailscale.token
 echo "$TAILSCALE_TOKEN" > /nix/home/tailscale.token
 
 if [ ! -e /etc/static/bashrc ]; then
-	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer
+	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n20
 fi
 
 if ! hash darwin-rebuild; then
