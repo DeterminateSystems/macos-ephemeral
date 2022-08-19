@@ -45,7 +45,7 @@ cd /nix/home/darwin-config
 nix-shell -p git --run "git fetch origin && git checkout origin/HEAD"
 
 touch /nix/home/buildkite.token
-chown 531:531 /nix/home/buildkite.token
+chown 0:0 /nix/home/buildkite.token
 chmod 0600 /nix/home/buildkite.token
 echo "$BUILDKITE_TOKEN" > /nix/home/buildkite.token
 
