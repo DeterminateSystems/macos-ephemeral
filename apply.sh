@@ -13,19 +13,11 @@ done
 export HOME=/root
 
 if [ ! -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-	if false; then
-		curl -L -o install.xz https://hydra.nixos.org/job/nix/master/binaryTarball.aarch64-darwin/latest/download/1
-		tar -xf install.xz
-		cd nix-*
+	curl -L -o install.xz https://hydra.nixos.org/job/nix/master/binaryTarball.aarch64-darwin/latest/download/1
+	tar -xf install.xz
+	cd nix-*
 
-		sh ./install --daemon 2>&1 | tail -n50
-	fi
-
-	export TMPDIR="/tmp/this-temp-does-not-exist"
-
-	curl https://abathur-nix-install-tests.cachix.org/serve/v3yyf3pvwlqp11sg7lr76ip9p8xf5iya/install > install
-	chmod +x ./install
-	sh ./install --daemon --tarball-url-prefix https://abathur-nix-install-tests.cachix.org/serve 2>&1 | tail -n50
+	sh ./install --daemon 2>&1 | tail -n50
 fi
 
 if ! hash nix; then
