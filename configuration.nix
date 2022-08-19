@@ -36,10 +36,18 @@
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
   };
-  system.activationScripts.preActivation.text = ''
-      mkdir -p '${config.users.users.buildkite-agent.home}'
-      chown ${toString config.users.users.buildkite-agent.uid}:${toString config.users.users.buildkite-agent.gid} '${config.users.users.buildkite-agent.home}'
-  '';
+  system.activationScripts.preActivation.text =
+    let
+      user = config.users.users.buildkite-agent;
+    in
+    ''
+      mkdir -p '${buildkite-agent.home}'
+      chown ${toString buildkite-agent.uid}:${toString buildkite-agent.gid} \
+        '${buildkite-agent.home}' \
+        '${config.services.buildkite-agent.tokenPath}'
+
+      chmod 0600 '${config.services.buildkite-agent.tokenPath}'
+    '';
 
   launchd.daemons.prometheus-node-exporter = {
     script = ''
