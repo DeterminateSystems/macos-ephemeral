@@ -1,9 +1,11 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
 BUILDKITE_TOKEN="$1"
 TAILSCALE_TOKEN="$2"
+
+set -x
 
 cd /tmp
 
@@ -48,12 +50,16 @@ nix-shell -p git --run "git fetch origin && git checkout origin/HEAD"
 touch /nix/home/buildkite.token
 chown 0:0 /nix/home/buildkite.token
 chmod 0600 /nix/home/buildkite.token
+set +x
 echo "$BUILDKITE_TOKEN" > /nix/home/buildkite.token
+set -x
 
 touch /nix/home/tailscale.token
 chown 0:0 /nix/home/tailscale.token
 chmod 0600 /nix/home/tailscale.token
+set +x
 echo "$TAILSCALE_TOKEN" > /nix/home/tailscale.token
+set -x
 
 if [ ! -e /etc/static/bashrc ]; then
 	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n20
