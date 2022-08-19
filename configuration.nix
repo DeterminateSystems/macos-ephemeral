@@ -12,7 +12,7 @@
   programs.bash.enableCompletion = false;
 
   #services.activate-system.enable = true;
-  
+
   users.knownUsers = [ "buildkite-agent" ];
   users.knownGroups = [ "buildkite-agent" ];
   users.groups.buildkite-agent.gid = 531;
@@ -22,13 +22,13 @@
 
 
   services.nix-daemon.enable = true;
-  
+
   nix.nixPath = [
     "nixpkgs=channel:nixpkgs-unstable"
     "darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz"
     "darwin-config=/nix/home/darwin-config/configuration.nix"
   ];
-  
+
   services.buildkite-agent = {
     enable = true;
     meta-data = "mac=1";

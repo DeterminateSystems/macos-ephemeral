@@ -62,11 +62,8 @@ fi
 export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
 
 sudo rm /etc/nix/nix.conf || true
-# echo hi > /root/buildkite.token
 
 darwin-rebuild switch
-
-
 
 echo "Done!"
 
