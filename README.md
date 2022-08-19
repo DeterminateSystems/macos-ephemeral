@@ -36,8 +36,8 @@ on the left side under "Devices",
 select "Device Groups",
 click "Add Device Group".
 
-1. Name it "Ephemeral CI".
-2. Add your macs to the group.
+1. Name it "Ephemeral CI"
+2. Add your macs to the group
 
 Click "Save".
 
@@ -60,7 +60,7 @@ click "Activate",
 then click "Add new profile".
 
 1. Name the profile "Automatic Updates"
-2. All of the defaults are fine as is.
+2. All of the defaults are fine as is
 
 Under "Profile Assignment",
 click "+ Add Assignment",
