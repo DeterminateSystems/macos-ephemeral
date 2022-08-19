@@ -3,6 +3,7 @@
   environment.systemPackages =
     [
       config.nix.package
+      pkgs.git
     ];
 
   programs.zsh.enable = true;
