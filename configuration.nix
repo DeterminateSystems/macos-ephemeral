@@ -38,7 +38,7 @@
   };
   system.activationScripts.preActivation.text =
     let
-      user = config.users.users.buildkite-agent;
+      buildkite-agent = config.users.users.buildkite-agent;
     in
     ''
       mkdir -p '${buildkite-agent.home}'
