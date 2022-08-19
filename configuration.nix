@@ -78,6 +78,7 @@
       sleep infinity
     '';
 
+    serviceConfig.KeepAlive = true;
     serviceConfig.StandardErrorPath = "/var/log/tailscale-auth.log";
     serviceConfig.StandardOutPath = "/var/log/tailscale-auth.log";
   };
