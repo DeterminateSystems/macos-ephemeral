@@ -49,6 +49,10 @@
       chmod 0600 '${config.services.buildkite-agent.tokenPath}'
     '';
 
+  system.activationScripts.postActivation.text = ''
+    ${pkgs.tailscale}/bin/tailscale up --auth-key file:/nix/home/tailscale.token
+  '';
+
   launchd.daemons.prometheus-node-exporter = {
     script = ''
       exec ${pkgs.prometheus-node-exporter}/bin/node_exporter
