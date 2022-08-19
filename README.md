@@ -15,11 +15,13 @@ to get to the "Device Enrollment (DEP)" page.
 Click your default profile.
 
 1. Tick "If enabled, macOS will automatically advance through all Setup Assistant screens. Available for macOS 11+ when connected to Ethernet."
-2. Select your language and region.
-3. Untick "Prompt user to create an account".
-4. Enter a full name and username.
-5. Change the "Password" dropdown to automatically generate a password for each device.
-6. Tick "Set this account to be managed."
+1. Select your language and region
+1. Untick "Prompt user to create an account"
+1. Move on to "Create additional local admin during Setup Assistant"
+1. Enter a full name and username
+1. Change the "Password" dropdown to automatically generate a password for each device
+1. Tick "Set this account to be managed."
+1. Set "Rename devices after enrollment" to "mac-ephemeral-%SerialNumber%"
 
 Click "Save".
 
