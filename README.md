@@ -39,4 +39,104 @@ click "Add Device Group".
 
 Click "Save".
 
-## Management Profiles
+## Management Profile: Software Update
+
+In general, software updates should be applied quickly and without any user interaction.
+I want to be able to forget this machine exists after setup, so we have fully automated the update process.
+
+### Steps
+
+On the "Management" tab,
+on the left side under "Management Profiles",
+select "Software Update",
+click "Add new profile".
+
+If the profile type isn't there,
+click "Activate New Profile Type",
+search for it by name,
+click "Activate",
+then click "Add new profile".
+
+1. Name the profile "Automatic Updates"
+2. All of the defaults are fine as is.
+
+Under "Profile Assignment",
+click "+ Add Assignment",
+select "Devices from specific Devices Group",
+tick "Ephemeral CI".
+
+Click "Save".
+
+## Management Profile: Energy Saver
+
+If the machine sleeps it is generally not easy to wake it back up.
+On my Mac Studio, waking it back up requires physically pressing the "Power" button on the back.
+I tried using a wireless mouse and a KVM, but neither were able to replace it.
+
+This profile disbales sleeping.
+
+### Steps
+
+On the "Management" tab,
+on the left side under "Management Profiles",
+select "Energy Saver",
+click "Add new profile".
+
+If the profile type isn't there,
+click "Activate New Profile Type",
+search for it by name,
+click "Activate",
+then click "Add new profile".
+
+1. Name the profile "Don't sleep"
+2. Select the "Desktop" profile tab
+3. Set "Put the display(s) to sleep after:" to "2 minutes"
+4. Set "Put the computer to sleep after:" to "Never"
+5. Set "Put the hard disk(s) to sleep after" to "Do not configure this option"
+6. Under "Wake options", tick "Wake for Ethernet network administrator access"
+7. Under "Other options", tick "Start up automatically after a power failure"
+
+
+Under "Profile Assignment",
+click "+ Add Assignment",
+select "Devices from specific Devices Group",
+tick "Ephemeral CI".
+
+Click "Save".
+
+## Management Profile: Energy Saver
+
+If the machine sleeps it is generally not easy to wake it back up.
+On my Mac Studio, waking it back up requires physically pressing the "Power" button on the back.
+I tried using a wireless mouse and a KVM, but neither were able to replace it.
+
+This profile disbales sleeping.
+
+### Steps
+
+On the "Management" tab,
+on the left side under "Management Profiles",
+select "Energy Saver",
+click "Add new profile".
+
+If the profile type isn't there,
+click "Activate New Profile Type",
+search for it by name,
+click "Activate",
+then click "Add new profile".
+
+1. Name the profile "Don't sleep"
+2. Select the "Desktop" profile tab
+3. Set "Put the display(s) to sleep after:" to "2 minutes"
+4. Set "Put the computer to sleep after:" to "Never"
+5. Set "Put the hard disk(s) to sleep after" to "Do not configure this option"
+6. Under "Wake options", tick "Wake for Ethernet network administrator access"
+7. Under "Other options", tick "Start upu automatically after a power failure"
+
+
+Under "Profile Assignment",
+click "+ Add Assignment",
+select "Devices from specific Devices Group",
+tick "Ephemeral CI".
+
+Click "Save".
