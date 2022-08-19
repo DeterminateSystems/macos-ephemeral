@@ -3,6 +3,7 @@
 set -eux
 
 BUILDKITE_TOKEN="$1"
+TAILSCALE_TOKEN="$1"
 
 cd /tmp
 
@@ -49,6 +50,11 @@ chown 0:0 /nix/home/buildkite.token
 chmod 0600 /nix/home/buildkite.token
 echo "$BUILDKITE_TOKEN" > /nix/home/buildkite.token
 
+touch /nix/home/tailscale.token
+chown 0:0 /nix/home/tailscale.token
+chmod 0600 /nix/home/tailscale.token
+echo "$TAILSCALE_TOKEN" > /nix/home/tailscale.token
+
 if [ ! -e /etc/static/bashrc ]; then
 	yes | $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer  2>&1 | tail -n20
 fi
@@ -66,4 +72,3 @@ sudo rm /etc/nix/nix.conf || true
 darwin-rebuild switch
 
 echo "Done!"
-
