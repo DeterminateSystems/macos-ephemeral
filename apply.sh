@@ -3,7 +3,7 @@
 set -eux
 
 BUILDKITE_TOKEN="$1"
-TAILSCALE_TOKEN="$1"
+TAILSCALE_TOKEN="$2"
 
 cd /tmp
 

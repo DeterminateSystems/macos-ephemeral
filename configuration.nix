@@ -49,10 +49,6 @@
       chmod 0600 '${config.services.buildkite-agent.tokenPath}'
     '';
 
-  system.activationScripts.postActivation.text = ''
-    ${pkgs.tailscale}/bin/tailscale up --auth-key file:/nix/home/tailscale.token
-  '';
-
   launchd.daemons.prometheus-node-exporter = {
     script = ''
       exec ${pkgs.prometheus-node-exporter}/bin/node_exporter
@@ -71,5 +67,18 @@
     serviceConfig.KeepAlive = true;
     serviceConfig.StandardErrorPath = "/var/log/tailscaled.log";
     serviceConfig.StandardOutPath = "/var/log/tailscaled.log";
+  };
+
+  launchd.daemons.tailscale-auth = {
+    script = ''
+      set -eux
+
+      sleep 30
+      ${pkgs.tailscale}/bin/tailscale up --auth-key file:/nix/home/tailscale.token
+      sleep infinity
+    '';
+
+    serviceConfig.StandardErrorPath = "/var/log/tailscale-auth.log";
+    serviceConfig.StandardOutPath = "/var/log/tailscale-auth.log";
   };
 }
