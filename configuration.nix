@@ -50,4 +50,14 @@
     serviceConfig.StandardErrorPath = "/var/log/prometheus-node-exporter.log";
     serviceConfig.StandardOutPath = "/var/log/prometheus-node-exporter.log";
   };
+
+  launchd.daemons.tailscaled = {
+    script = ''
+      exec ${pkgs.tailscale}/bin/tailscaled
+    '';
+
+    serviceConfig.KeepAlive = true;
+    serviceConfig.StandardErrorPath = "/var/log/tailscaled.log";
+    serviceConfig.StandardOutPath = "/var/log/tailscaled.log";
+  };
 }
