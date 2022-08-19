@@ -73,7 +73,7 @@
     script = ''
       set -eux
 
-      sleep 30
+      sleep 5
       ${pkgs.tailscale}/bin/tailscale up --auth-key file:/nix/home/tailscale.token
       sleep infinity
     '';
