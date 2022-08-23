@@ -18,7 +18,7 @@ Click your default profile.
 1. Select your language and region
 1. Untick "Prompt user to create an account"
 1. Move on to "Create additional local admin during Setup Assistant"
-1. Enter a full name and username
+1. Enter a full name and use "ephemeraladmin" for the username. Note that other pieces of this system depends on the user being named "ephemeraladmin".
 1. Change the "Password" dropdown to automatically generate a password for each device
 1. Tick "Set this account to be managed."
 1. Set "Rename devices after enrollment" to "mac-ephemeral-%SerialNumber%"
