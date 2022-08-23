@@ -186,3 +186,63 @@ select "Devices from specific Devices Group",
 tick "Ephemeral CI".
 
 Click "Save".
+
+
+## Management Profile: Custom Commands: Install Nix
+
+Installs Nix and nix-darwin, which is configured to run a Buildkite agent and join our Tailscale network.]
+
+Note that right now this code assumes you're installing everything for DetSys purposes.
+It is an explicit goal for this repository to support configuring things for *your* purposes without necessarily having to fork the repo.
+Please open issues discussing or send PRs improving this.
+
+#### Tailscale Token
+
+The tailscale token should be configured as follows.
+
+First configure a tag to assign to ephemeral macs, by adding this to your ACL:
+
+```json
+	"tagOwners": {
+		"tag:ephemeral-mac-ci": ["you@example.com"],
+	}
+```
+
+1. Visit https://login.tailscale.com/admin/settings/keys
+1. Click "Generate Auth Key"
+1. Enable "Reusable"
+1. Enable "Ephemeral"
+1. Enable "Tags", and assign the "ephemeral-mac-ci" tag.
+
+Use the created auth token later in the steps.
+
+### Steps
+
+On the "Management" tab,
+on the left side under "Management Profiles",
+select "Custom Commands",
+click "Add new profile".
+
+If the profile type isn't there,
+click "Activate New Profile Type",
+search for it by name,
+click "Activate",
+then click "Add new profile".
+
+1. Name the profile "Install Nix"
+1. Select the "Code" profile tab
+1. Click the code text box
+1. Paste the contents of `install-nix-fetcher.sh` into the box
+1. Edit the last line to use your buildkite token and your tailscale token.
+1. Click the checkmark in the top right of the Code Edit window
+1. Select the "Execution Settings" profile tab
+1. For "Execute Command" select "Only based on schedule or events"
+1. For "Event" untick "Upon Enrollment Only"
+1. For "Event" tick "Every user sign-in"
+
+Under "Profile Assignment",
+click "+ Add Assignment",
+select "Devices from specific Devices Group",
+tick "Ephemeral CI".
+
+Click "Save".
