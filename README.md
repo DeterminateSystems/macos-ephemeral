@@ -106,19 +106,26 @@ tick "Ephemeral CI".
 
 Click "Save".
 
-## Management Profile: Energy Saver
+## Management Profile: Custom Commands: Autologin
 
-If the machine sleeps it is generally not easy to wake it back up.
-On my Mac Studio, waking it back up requires physically pressing the "Power" button on the back.
-I tried using a wireless mouse and a KVM, but neither were able to replace it.
+Autologin is necessary to allow fast erases and reprovisions.
 
-This profile disbales sleeping.
+Modern macOS software and hardware has two erase modes: "Erase All Content and Settings" (EACS) and "Obliterate".
+EACS takes approximately 5 minutes and involves a brief reboot after clearing the existing content and settings.
+Obliterate completely erases the disk and then rewrites the operating system, annd can take up to several hours.
+Obliterate is the only option on older hardware.
 
+EACS is the preferred method of implementing an ephemeral macOS machine because of the fast cycle time.
+In order for EACS to work, the machine must have a "Bootstrap Token" escrowed with our MDM server.
+The only way to escrow a bootstrap token is to have an administrative user log in.
+
+This profile creates an administrative user with a random, unknown password, and causes it to automatically log in.
+After creating the user, the machine is rebooted to cause the login to happen.
 ### Steps
 
 On the "Management" tab,
 on the left side under "Management Profiles",
-select "Energy Saver",
+select "Autologin",
 click "Add new profile".
 
 If the profile type isn't there,
@@ -127,14 +134,14 @@ search for it by name,
 click "Activate",
 then click "Add new profile".
 
-1. Name the profile "Don't sleep"
-2. Select the "Desktop" profile tab
-3. Set "Put the display(s) to sleep after:" to "2 minutes"
-4. Set "Put the computer to sleep after:" to "Never"
-5. Set "Put the hard disk(s) to sleep after" to "Do not configure this option"
-6. Under "Wake options", tick "Wake for Ethernet network administrator access"
-7. Under "Other options", tick "Start upu automatically after a power failure"
-
+1. Name the profile "Autologin as CI"
+1. Select the "Code" profile tab
+1. Click the code text box
+1. Paste the contents of `auto-login.sh` into the box
+1. Click the checkmark in the top right of the Code Edit window
+1. Select the "Execution Settings" profile tab
+1. For "Execute Command" select "Only based on schedule or events"
+1. For "Event" tick "Upon Enrollment Only"
 
 Under "Profile Assignment",
 click "+ Add Assignment",
