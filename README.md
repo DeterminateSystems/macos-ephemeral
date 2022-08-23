@@ -106,7 +106,7 @@ tick "Ephemeral CI".
 
 Click "Save".
 
-## Management Profile: Custom Commands: Autologin
+## Management Profile: Custom Commands: Autologin as CI
 
 Autologin is necessary to allow fast erases and reprovisions.
 
@@ -125,7 +125,7 @@ After creating the user, the machine is rebooted to cause the login to happen.
 
 On the "Management" tab,
 on the left side under "Management Profiles",
-select "Autologin",
+select "Custom Commands",
 click "Add new profile".
 
 If the profile type isn't there,
