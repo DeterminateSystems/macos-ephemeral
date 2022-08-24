@@ -1,5 +1,25 @@
 # Ephemeral macOS for Buildkite
 
+Set up macOS machines to automatically erase and provision themselves on a Tailscale network with Buildkite.
+An erase/reinstall cycle can complete in less than 10 minutes, making it suitable for regular automation.
+
+This README and tooling is public documentation for Determinate Systems, Inc.'s internal use.
+The goal of making it public is to share the information, and foster the use of ephemeral macOS machines running Nix.
+
+Internally, we use this tooling to support the testing of our software on macOS, and the Nix installer itself.
+
+This repository makes many assumptions about your workflow and how you want to use this code.
+These assumptions are a byproduct of the repository only being used internally, and are likely not difficult to remove.
+If you use this code and documentation for yourself, consider sending contributions upstream that make it easier for people to use.
+
+## Requirements
+
+* We assume you are using recent Macs with either a T2 chip or Apple Silicon.
+* You're using Mosyle MDM.
+  Other MDMs might work, but we're focused on Mosyle.
+  Feel free to send pull requests supporting other MDMs.
+* Your Macs are already part of your Apple Business Manager account.
+
 ## Automatic Enrollment
 
 After erasing, the machine should fully boot and configure itself without any human interaction.
