@@ -4,7 +4,14 @@ set -eux
 
 cd "$(mktemp -d)"
 
-curl -L https://github.com/freegeek-pdx/mkuser/raw/main/mkuser.sh > mkuser.sh
+cat <<EOF > mkuser.sh.check
+b37f75b15eda06c332ea6d54c910fead6795dc62  ./mkuser.sh
+EOF
+curl -L https://raw.githubusercontent.com/freegeek-pdx/mkuser/2022.8.3-1/mkuser.sh > mkuser.sh
+if ! shasum -c ./mkuser.sh.check; then
+  echo "mkuser.sh was not what we expected."
+  exit 1
+fi
 
 chmod +x ./mkuser.sh
 
