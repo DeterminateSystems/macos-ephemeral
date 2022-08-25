@@ -20,6 +20,18 @@ If you use this code and documentation for yourself, consider sending contributi
   Feel free to send pull requests supporting other MDMs.
 * Your Macs are already part of your Apple Business Manager account.
 
+## Erasing a Mac
+
+Select the device in `Management`,
+then `Devices Overview`,
+then select the `More` menu.
+Click `Erase device`.
+Change `Obliteration Behavior` to `Do not Obliterate`.
+This requires a T2 or Apple Silicon chip.
+See "ObliterationBehavior" on https://developer.apple.com/documentation/devicemanagement/erasedevicecommand/command/.
+
+# Setting up Mosyle
+
 ## Automatic Enrollment
 
 After erasing, the machine should fully boot and configure itself without any human interaction.
