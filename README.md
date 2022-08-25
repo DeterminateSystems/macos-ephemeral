@@ -19,6 +19,11 @@ If you use this code and documentation for yourself, consider sending contributi
   Other MDMs might work, but we're focused on Mosyle.
   Feel free to send pull requests supporting other MDMs.
 * Your Macs are already part of your Apple Business Manager account.
+* Your Macs need either a fake or real display attached.
+  Amazon sells "dummy" HDMI plugs, but we used TinyPilot KVMs.
+* Your Macs need a mouse plugged in.
+  The TinyPilot KVM doesn't count.
+  We used the cheapest Targus mouse with a wireless dongle, and threw away the mouse.
 
 ## Erasing a Mac
 
