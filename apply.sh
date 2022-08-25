@@ -41,7 +41,7 @@ export HOME=/nix/home
 nix-shell -p git 2>&1 | tail -n5
 if [ ! -d /nix/home/darwin-config ]; then
     cd /nix/home
-    nix-shell -p git --run "git clone https://gist.github.com/8694fac95ff865a468c94d605c4b0a66.git darwin-config"
+    nix-shell -p git --run "git clone https://github.com/DeterminateSystems/macos-ephemeral.git darwin-config"
 fi
 
 cd /nix/home/darwin-config
