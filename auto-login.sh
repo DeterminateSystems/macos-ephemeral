@@ -2,6 +2,11 @@
 
 set -eux
 
+
+while ! ping -c1 github.com; do
+	sleep 1
+done
+
 cd "$(mktemp -d)"
 
 cat <<EOF > mkuser.sh.check
