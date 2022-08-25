@@ -19,6 +19,7 @@ If you use this code and documentation for yourself, consider sending contributi
   Other MDMs might work, but we're focused on Mosyle.
   Feel free to send pull requests supporting other MDMs.
 * Your Macs are already part of your Apple Business Manager account.
+  Once you have an Apple Business Manager account, they can provide documentation on adding existing Macs.
 * Your Macs need either a fake or real display attached.
   Amazon sells "dummy" HDMI plugs, but we used TinyPilot KVMs.
 * Your Macs need a mouse plugged in.
