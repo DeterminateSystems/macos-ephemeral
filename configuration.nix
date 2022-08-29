@@ -35,6 +35,9 @@
     openssh.privateKeyPath = "/dev/null";
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
+    extraConfig = ''
+      spawn = 4
+    '';
   };
   system.activationScripts.preActivation.text =
     let
