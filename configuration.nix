@@ -20,14 +20,19 @@
   users.users.buildkite-agent.gid = config.users.groups.buildkite-agent.gid;
   users.users.buildkite-agent.shell = "/bin/sh";
 
-
   services.nix-daemon.enable = true;
 
-  nix.nixPath = [
-    "nixpkgs=channel:nixpkgs-unstable"
-    "darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz"
-    "darwin-config=/nix/home/darwin-config/configuration.nix"
-  ];
+  nix = {
+    settings = {
+      "extra-experimental-features" = [ "nix-command" "flakes" ];
+    };
+
+    nixPath = [
+      "nixpkgs=channel:nixpkgs-unstable"
+      "darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz"
+      "darwin-config=/nix/home/darwin-config/configuration.nix"
+    ];
+  };
 
   services.buildkite-agent = {
     enable = true;
