@@ -10,9 +10,9 @@ done
 cd "$(mktemp -d)"
 
 cat <<EOF > mkuser.sh.check
-b37f75b15eda06c332ea6d54c910fead6795dc62  ./mkuser.sh
+cdb1a87af715c02619e3b591438090d954c870a7  ./mkuser.sh
 EOF
-curl -L https://raw.githubusercontent.com/freegeek-pdx/mkuser/2022.8.3-1/mkuser.sh > mkuser.sh
+curl -L https://raw.githubusercontent.com/freegeek-pdx/mkuser/2022.7.8-1/mkuser.sh > mkuser.sh
 if ! shasum -c ./mkuser.sh.check; then
   echo "mkuser.sh was not what we expected."
   exit 1
