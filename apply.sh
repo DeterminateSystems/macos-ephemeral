@@ -9,17 +9,18 @@ set -x
 
 cd /tmp
 
-while ! ping -c1 hydra.nixos.org; do
+while ! ping -c1 nixos.org; do
     sleep 1
 done
 
 export HOME=/root
 
 if [ ! -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    curl -L -o install.xz https://hydra.nixos.org/job/nix/master/binaryTarball.aarch64-darwin/latest/download/1
-    tar -xf install.xz
-    cd nix-*
-
+    #curl -L -o install.xz https://hydra.nixos.org/job/nix/master/binaryTarball.aarch64-darwin/latest/download/1
+    #tar -xf install.xz
+    #cd nix-*
+    
+    curl -Lo install https://nixos.org/nix/install
     sh ./install --daemon 2>&1 | tail -n50
 fi
 
