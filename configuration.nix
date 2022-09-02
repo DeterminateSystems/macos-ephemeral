@@ -37,8 +37,8 @@
   services.buildkite-agent = {
     enable = true;
     meta-data = "mac=1";
-    openssh.privateKeyPath = "/dev/null";
-    openssh.publicKeyPath = "/dev/null";
+    openssh.privateKeyPath = "/Volumes/CONFIG/buildkite-agent/sshkey";
+    openssh.publicKeyPath = "/Volumes/CONFIG/buildkite-agent/sshkey.pub";
     tokenPath = "/nix/home/buildkite.token";
     extraConfig = ''
       spawn = 4
@@ -46,15 +46,20 @@
   };
   system.activationScripts.preActivation.text =
     let
+      svc = config.services.buildkite-agent;
       buildkite-agent = config.users.users.buildkite-agent;
     in
     ''
+      if [ ! -f ${lib.escapeShellArg svc.openssh.privateKeyPath} ]; then
+        ssh-keygen -t ed25519 -f ${lib.escapeShellArg svc.openssh.privateKeyPath}
+      fi
+
       mkdir -p '${buildkite-agent.home}'
       chown ${toString buildkite-agent.uid}:${toString buildkite-agent.gid} \
-        '${buildkite-agent.home}' \
-        '${config.services.buildkite-agent.tokenPath}'
+        ${lib.escapeShellArg buildkite-agent.home} \
+        ${lib.escapeShellArg config.services.buildkite-agent.tokenPath}
 
-      chmod 0600 '${config.services.buildkite-agent.tokenPath}'
+      chmod 0600 '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
     '';
 
   launchd.daemons.prometheus-node-exporter = {
