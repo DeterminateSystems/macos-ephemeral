@@ -61,13 +61,15 @@
 
       mkdir -m 0700 -p ${lib.escapeShellArg buildkite-agent.home}/.ssh
       cp ${lib.escapeShellArg ssh_key} ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519
+      cp ${lib.escapeShellArg ssh_key}.pub ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519.pub
       chmod 600 ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519
 
       chown ${toString buildkite-agent.uid}:${toString buildkite-agent.gid} \
         ${lib.escapeShellArg buildkite-agent.home} \
         ${lib.escapeShellArg config.services.buildkite-agent.tokenPath} \
         ${lib.escapeShellArg buildkite-agent.home}/.ssh \
-        ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519
+        ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519 \
+        ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519.pub
 
       chmod 0600 '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
     '';
