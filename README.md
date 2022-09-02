@@ -152,6 +152,9 @@ This means Mosyle MDM agent cannot access removable media out of the box.
 
 This profile allows Mosyle to access removable storage.
 
+Note that we don't actually _enable_ anything in this profile except a single checkbox for the Self-Service app.
+That is intentional: that tickbox is all we need.
+
 ### Steps
 
 On the `Management` tab,
@@ -168,7 +171,6 @@ then click `Add new profile`.
 
 1. Name the profile `Allow Mosyle access to Removable Volumes`
 1. Tick `Install the Privacy Preferences Policy Control settings for the Mosyle Self-Service app to allow access to all necessary files and application data.`
-1. Next to `Allow {APP} to have access to`, select `Removable Volumes`
 
 Under `Profile Assignment`,
 click `+ Add Assignment`,
