@@ -51,10 +51,11 @@
     in
     ''
       if [ ! -f ${lib.escapeShellArg svc.openssh.privateKeyPath} ]; then
+        mkdir -p "$(dirname ${lib.escapeShellArg svc.openssh.privateKeyPath})" || true
         ssh-keygen -t ed25519 -f ${lib.escapeShellArg svc.openssh.privateKeyPath}
       fi
 
-      mkdir -p '${buildkite-agent.home}'
+      mkdir -p '${lib.escapeShellArg buildkite-agent.home}' || true
       chown ${toString buildkite-agent.uid}:${toString buildkite-agent.gid} \
         ${lib.escapeShellArg buildkite-agent.home} \
         ${lib.escapeShellArg config.services.buildkite-agent.tokenPath}
