@@ -144,7 +144,7 @@ tick `Ephemeral CI`.
 
 Click `Save`.
 
-## Management Profile: Security & Privacy
+## Management Profile: Security & Privacy: Granting Mosyle access to Removable Volumes
 
 Our provisioning script uses SSH keys stored on an external volume to survive wipes.
 Apple widely prohibits programs from reading removable storage.
