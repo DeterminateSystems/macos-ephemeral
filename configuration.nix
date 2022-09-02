@@ -37,8 +37,8 @@
   services.buildkite-agent = {
     enable = true;
     meta-data = "mac=1";
-    openssh.privateKeyPath = "/Volumes/CONFIG/buildkite-agent/sshkey";
-    openssh.publicKeyPath = "/Volumes/CONFIG/buildkite-agent/sshkey.pub";
+    openssh.privateKeyPath = "/dev/null";
+    openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
     extraConfig = ''
       spawn = 4
@@ -48,17 +48,26 @@
     let
       svc = config.services.buildkite-agent;
       buildkite-agent = config.users.users.buildkite-agent;
+
+      ssh_key = "/Volumes/CONFIG/buildkite-agent/sshkey";
     in
     ''
-      if [ ! -f ${lib.escapeShellArg svc.openssh.privateKeyPath} ]; then
-        mkdir -p "$(dirname ${lib.escapeShellArg svc.openssh.privateKeyPath})" || true
-        ssh-keygen -t ed25519 -f ${lib.escapeShellArg svc.openssh.privateKeyPath}
+      if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
+        mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
+        ssh-keygen -t ed25519 -f ${lib.escapeShellArg ssh_key}
       fi
 
-      mkdir -p '${lib.escapeShellArg buildkite-agent.home}' || true
+      mkdir -p ${lib.escapeShellArg buildkite-agent.home} || true
+
+      mkdir -m 0700 -p ${lib.escapeShellArg buildkite-agent.home}/.ssh
+      cp ${lib.escapeShellArg ssh_key} ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519
+      chmod 600 ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519
+
       chown ${toString buildkite-agent.uid}:${toString buildkite-agent.gid} \
         ${lib.escapeShellArg buildkite-agent.home} \
-        ${lib.escapeShellArg config.services.buildkite-agent.tokenPath}
+        ${lib.escapeShellArg config.services.buildkite-agent.tokenPath} \
+        ${lib.escapeShellArg buildkite-agent.home}/.ssh \
+        ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519
 
       chmod 0600 '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
     '';
