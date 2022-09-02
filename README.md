@@ -113,7 +113,7 @@ If the machine sleeps it is generally not easy to wake it back up.
 On my Mac Studio, waking it back up requires physically pressing the `Power` button on the back.
 I tried using a wireless mouse and a KVM, but neither were able to replace it.
 
-This profile disbales sleeping.
+This profile disables sleeping.
 
 ### Steps
 
@@ -136,6 +136,39 @@ then click `Add new profile`.
 1. Under `Wake options`, tick `Wake for Ethernet network administrator access`
 1. Under `Other options`, tick `Start up automatically after a power failure`
 
+
+Under `Profile Assignment`,
+click `+ Add Assignment`,
+select `Devices from specific Devices Group`,
+tick `Ephemeral CI`.
+
+Click `Save`.
+
+## Management Profile: Security & Privacy
+
+Our provisioning script uses SSH keys stored on an external volume to survive wipes.
+Apple widely prohibits programs from reading removable storage.
+This means Mosyle MDM agent cannot access removable media out of the box.
+
+This profile allows Mosyle to access removable storage.
+
+### Steps
+
+On the `Management` tab,
+on the left side under `Management Profiles`,
+select `Security & Privacy`,
+near the top of the screen select the `Privacy` tab
+click `Add new profile`.
+
+If the profile type isn't there,
+click `Activate New Profile Type`,
+search for it by name,
+click `Activate`,
+then click `Add new profile`.
+
+1. Name the profile `Allow Mosyle access to Removable Volumes`
+1. Tick `Install the Privacy Preferences Policy Control settings for the Mosyle Self-Service app to allow access to all necessary files and application data.`
+1. Next to `Allow {APP} to have access to`, select `Removable Volumes`
 
 Under `Profile Assignment`,
 click `+ Add Assignment`,
