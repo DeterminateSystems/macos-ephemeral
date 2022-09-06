@@ -20,11 +20,18 @@ If you use this code and documentation for yourself, consider sending contributi
   Feel free to send pull requests supporting other MDMs.
 * Your Macs are already part of your Apple Business Manager account.
   Once you have an Apple Business Manager account, they can provide documentation on adding existing Macs.
+
+### Hardware Requirements
+
+* Your Macs need a mouse **directly** plugged in.
+  The TinyPilot KVM doesn't count.
+  A mouse plugged in to a USB hub doesn't count.
+  We used the cheapest Targus mouse with a wireless dongle, and threw away the mouse.
+* A USB storage device formatted and named "CONFIG".
+  SSH keys and other persistent state is stored here.
 * Your Macs need either a fake or real display attached.
   Amazon sells "dummy" HDMI plugs, but we used TinyPilot KVMs.
-* Your Macs need a mouse plugged in.
-  The TinyPilot KVM doesn't count.
-  We used the cheapest Targus mouse with a wireless dongle, and threw away the mouse.
+
 
 ## Erasing a Mac
 
