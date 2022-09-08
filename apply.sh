@@ -5,7 +5,7 @@ set -eu
 BUILDKITE_TOKEN="$1"
 TAILSCALE_TOKEN="$2"
 
-set -x
+#set -x
 
 cd /tmp
 
@@ -21,7 +21,7 @@ if [ ! -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
     #cd nix-*
     
     curl -Lo install https://nixos.org/nix/install
-    sh ./install --daemon 2>&1 | tail -n50
+    sh ./install --daemon 2>&1 | tail -n5
 fi
 
 if ! hash nix; then
@@ -63,7 +63,7 @@ echo "$TAILSCALE_TOKEN" > /nix/home/tailscale.token
 set -x
 
 if [ ! -e /etc/static/bashrc ]; then
-yes |    $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n20
+yes |    $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n10
 fi
 
 if ! hash darwin-rebuild; then
