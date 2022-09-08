@@ -54,7 +54,13 @@
     ''
       if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
         mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
-        ssh-keygen -t ed25519 -f ${lib.escapeShellArg ssh_key}
+        echo "Waiting a second in case the config volume shows up"
+        sleep 5
+      fi
+      
+      if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
+        mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
+        ssh-keygen -t ed25519 -f ${lib.escapeShellArg ssh_key} -N ""
       fi
 
       mkdir -p ${lib.escapeShellArg buildkite-agent.home} || true
