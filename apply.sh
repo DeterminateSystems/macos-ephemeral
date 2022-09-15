@@ -21,7 +21,7 @@ if [ ! -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
     #cd nix-*
     
     curl -Lo install https://nixos.org/nix/install
-    sh ./install --daemon 2>&1 | tail -n5
+    time sh ./install --daemon 2>&1 | tail -n5
 fi
 
 if ! hash nix; then
