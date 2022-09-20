@@ -326,3 +326,41 @@ select `Devices from specific Devices Group`,
 tick `Ephemeral CI`.
 
 Click `Save`.
+
+
+
+## Management Profile: Custom Commands: Show Public SSH Key
+
+Shows the public key of the private key generated on the box.
+
+### Steps
+
+On the `Management` tab,
+on the left side under `Management Profiles`,
+select `Custom Commands`,
+click `Add new profile`.
+
+If the profile type isn't there,
+click `Activate New Profile Type`,
+search for it by name,
+click `Activate`,
+then click `Add new profile`.
+
+1. Name the profile `Show Public SSH Key`
+1. Select the `Code` profile tab
+1. Click the code text box
+1. Paste `cat /Volumes/CONFIG/buildkite-agent/sshkey.pub` into the box
+1. Click the checkmark in the top right of the Code Edit window
+1. Select the `Execution Settings` profile tab
+1. For `Execute Command` select `Only based on schedule or events`
+1. For `Event` untick `Upon Enrollment Only`
+1. For `Event` tick `Every start up of the Mac`
+1. For `Event` tick `Every user sign-in`
+1. For `Event` tick `Every "Device info" update"`
+
+Under `Profile Assignment`,
+click `+ Add Assignment`,
+select `Devices from specific Devices Group`,
+tick `Ephemeral CI`.
+
+Click `Save`.
