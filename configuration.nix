@@ -52,6 +52,11 @@
       ssh_key = "/Volumes/CONFIG/buildkite-agent/sshkey";
     in
     ''
+      while [ ! -d /Volumes/CONFIG ]; do
+        echo "Waiting for /Volumes/CONFIG to exist ..."
+        sleep 1
+      done
+      
       if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
         mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
         echo "Waiting a second in case the config volume shows up"
