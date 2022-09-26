@@ -2,6 +2,10 @@
 
 set -eu
 
+CONFIG_REPO=$1
+CONFIG_BRANCH=$2
+CONFIG_TARGET=$3
+
 #set -x
 
 cd /tmp
@@ -27,7 +31,7 @@ if ! hash nix; then
     set -eux
 fi
 
-export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
+export NIX_PATH=darwin-config="/nix/home/darwin-config/$CONFIG_TARGET":nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
 
 
 if [ ! -d /nix/home ]; then
@@ -39,11 +43,11 @@ export HOME=/nix/home
 nix-shell -p git 2>&1 | tail -n5
 if [ ! -d /nix/home/darwin-config ]; then
     cd /nix/home
-    nix-shell -p git --run "git clone https://github.com/DeterminateSystems/macos-ephemeral.git darwin-config"
+    nix-shell -p git --run "git clone $CONFIG_REPO ./darwin-config"
 fi
 
 cd /nix/home/darwin-config
-nix-shell -p git --run "git fetch origin && git checkout origin/HEAD"
+nix-shell -p git --run "git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FETCH_HEAD"
 
 if [ ! -e /etc/static/bashrc ]; then
 yes |    $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n10
@@ -55,7 +59,7 @@ if ! hash darwin-rebuild; then
     set -eux
 fi
 
-export NIX_PATH=darwin-config=/nix/home/darwin-config/configuration.nix:nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
+export NIX_PATH=darwin-config="/nix/home/darwin-config/$CONFIG_TARGET":nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
 
 sudo rm /etc/nix/nix.conf || true
 
