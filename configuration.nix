@@ -77,12 +77,12 @@
 
       chown ${toString buildkite-agent.uid}:${toString buildkite-agent.gid} \
         ${lib.escapeShellArg buildkite-agent.home} \
-        ${lib.escapeShellArg config.services.buildkite-agent.tokenPath} \
         ${lib.escapeShellArg buildkite-agent.home}/.ssh \
         ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519 \
         ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519.pub
 
-      chmod 0600 '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
+      install -m 0600 -o ${toString buildkite-agent.uid} -g ${toString buildkite-agent.gid} /Volumes/CONFIG/buildkite.token '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
+      install -m 0600 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /nix/home/tailscale.token
     '';
 
   launchd.daemons.prometheus-node-exporter = {

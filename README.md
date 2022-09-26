@@ -294,7 +294,11 @@ First configure a tag to assign to ephemeral macs, by adding this to your ACL:
 1. Enable `Ephemeral`
 1. Enable `Tags`, and assign the `ephemeral-mac-ci` tag.
 
-Use the created auth token later in the steps.
+Save the generated token into `/Volumes/CONFIG/tailscale.token`.
+
+#### Buildkite Token
+
+Save the buildkite agent token into `/Volumes/CONFIG/buildkite.token`.
 
 ### Steps
 
@@ -313,7 +317,6 @@ then click `Add new profile`.
 1. Select the `Code` profile tab
 1. Click the code text box
 1. Paste the contents of `install-nix-fetcher.sh` into the box
-1. Edit the last line to use your buildkite token and your tailscale token.
 1. Click the checkmark in the top right of the Code Edit window
 1. Select the `Execution Settings` profile tab
 1. For `Execute Command` select `Only based on schedule or events`
