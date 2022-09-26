@@ -1,4 +1,12 @@
-# Ephemeral macOS for Buildkite
+# Ephemeral macOS Deployment
+
+Internally, we use this tooling to support the testing of our software on macOS, and the Nix installer itself.
+
+This repository makes many assumptions about your workflow and how you want to use this code.
+These assumptions are a byproduct of the repository only being used internally, and are likely not difficult to remove.
+If you use this code and documentation for yourself, consider sending contributions upstream that make it easier for people to use.
+
+### Included configuration.nix
 
 Set up macOS machines to automatically erase and provision themselves on a Tailscale network with Buildkite.
 An erase/reinstall cycle can complete in less than 10 minutes, making it suitable for regular automation.
@@ -6,11 +14,6 @@ An erase/reinstall cycle can complete in less than 10 minutes, making it suitabl
 This README and tooling is public documentation for Determinate Systems, Inc.'s internal use.
 The goal of making it public is to share the information, and foster the use of ephemeral macOS machines running Nix.
 
-Internally, we use this tooling to support the testing of our software on macOS, and the Nix installer itself.
-
-This repository makes many assumptions about your workflow and how you want to use this code.
-These assumptions are a byproduct of the repository only being used internally, and are likely not difficult to remove.
-If you use this code and documentation for yourself, consider sending contributions upstream that make it easier for people to use.
 
 ## Requirements
 
@@ -317,6 +320,9 @@ then click `Add new profile`.
 1. Select the `Code` profile tab
 1. Click the code text box
 1. Paste the contents of `install-nix-fetcher.sh` into the box
+1. Edit the last lines (`repo`, `branch`, `cfgpath`) to point to your repository and configuration.
+   Note you can use Mosyle's tags and variables to do dynamic configuration dispatch.
+   See the end for an example.
 1. Click the checkmark in the top right of the Code Edit window
 1. Select the `Execution Settings` profile tab
 1. For `Execute Command` select `Only based on schedule or events`
@@ -367,3 +373,18 @@ select `Devices from specific Devices Group`,
 tick `Ephemeral CI`.
 
 Click `Save`.
+
+---
+
+### Using Mosyle's Variables for Dynamic Dispatch
+
+```sh
+repo="https://github.com/DeterminateSystems/macos-ephemeral.git"
+branch="HEAD"
+cfgpath="config.nix"
+
+if (echo "%Tags%" | grep -q "beta"); then
+    branch="beta"
+    cfgpath="configuration.nix"
+fi
+```

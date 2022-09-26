@@ -10,4 +10,9 @@ cd "$(mktemp -d)"
 
 curl -L -o apply.sh https://github.com/DeterminateSystems/macos-ephemeral/raw/main/apply.sh
 chmod +x ./apply.sh
-./apply.sh "buildkite token" "tailscale token"
+
+repo="https://github.com/DeterminateSystems/macos-ephemeral.git"
+branch="HEAD"
+cfgpath="configuration.nix"
+
+./apply.sh "$repo" "$branch" "$cfgpath"
