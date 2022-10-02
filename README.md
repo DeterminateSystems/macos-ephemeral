@@ -26,14 +26,20 @@ The goal of making it public is to share the information, and foster the use of 
 
 ### Hardware Requirements
 
-* Your Macs need a mouse **directly** plugged in.
-  The TinyPilot KVM doesn't count.
-  A mouse plugged in to a USB hub doesn't count.
-  We used the cheapest Targus mouse with a wireless dongle, and threw away the mouse.
-* A USB storage device formatted and named "CONFIG".
+* [A Logitech Unifying Receiver](https://www.amazon.com/dp/B072JW9LT8) to act as a mouse and keyboard.
+  The Logitech receiver doesn't need to be configured or paired.
+  Note that macOS is very paricular about the mouse and keyboard hardware directly after erasing.
+  The TinyPilot KVM was not recognized as a mouse.
+  Using a USB hub between the mouse and the computer didn't work either.
+  A cheap Targus mouse's dongle worked as well.
+* [A USB-C thumb disk](https://www.amazon.com/dp/B09WB2RPS4) formatted and named "CONFIG".
   SSH keys and other persistent state is stored here.
-* Your Macs need either a fake or real display attached.
-  Amazon sells "dummy" HDMI plugs, but we used TinyPilot KVMs.
+  A USB-A disk works as well, but generally there are more USB-C ports than A.
+* [A "Dummy" HMDI plug](https://www.amazon.com/dp/B07FB64V4Y) to convince macOS to stay alive.
+  A TinyPilot KVM works as well.
+  Any display should be fine.
+* [A TRRS 3.5mm male audio jack](https://www.amazon.com/dp/B01CHNZHQY) to disable built-in speakers and microphones.
+  Optional.
 
 
 ## Erasing a Mac
