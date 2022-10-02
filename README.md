@@ -26,7 +26,7 @@ The goal of making it public is to share the information, and foster the use of 
 
 ### Hardware Requirements
 
-* [A Logitech Unifying Receiver](https://www.amazon.com/dp/B072JW9LT8) to act as a mouse and keyboard.
+* [A USB-A Logitech Unifying Receiver](https://www.amazon.com/dp/B072JW9LT8) to act as a mouse and keyboard.
   The Logitech receiver doesn't need to be configured or paired.
   Note that macOS is very paricular about the mouse and keyboard hardware directly after erasing.
   The TinyPilot KVM was not recognized as a mouse.
@@ -34,13 +34,44 @@ The goal of making it public is to share the information, and foster the use of 
   A cheap Targus mouse's dongle worked as well.
 * [A USB-C thumb disk](https://www.amazon.com/dp/B09WB2RPS4) formatted and named "CONFIG".
   SSH keys and other persistent state is stored here.
-  A USB-A disk works as well, but generally there are more USB-C ports than A.
 * [A "Dummy" HMDI plug](https://www.amazon.com/dp/B07FB64V4Y) to convince macOS to stay alive.
   A TinyPilot KVM works as well.
   Any display should be fine.
 * [A TRRS 3.5mm male audio jack](https://www.amazon.com/dp/B01CHNZHQY) to disable built-in speakers and microphones.
   Optional.
 
+#### Port Availability
+
+##### 2020 M1 Mac Mini
+
+* 2x Thunderbolt 4 / USB-C
+* 1x 1Gbase-T Ethernet (10Gbase-T optional)
+* 1x HDMI
+* 2x USB-A
+* 1x 3.5mm headphone jack
+
+##### 2018 Intel Mac Mini
+
+* 4x Thunderbolt 3 / USB-C
+* 1x 1Gbase-T Ethernet (10Gbase-T optional)
+* 1x HDMI
+* 2x USB-A
+* 1x 3.5mm headphone jack
+
+##### 2022 M1 (Max, Ultra) Mac Studio
+
+Front:
+
+* 2x Thunderbolt 4 / USB-C
+* 1x SDXC
+
+Back:
+
+* 4x Thunderbolt 4 / USB-C
+* 1x 10Gbase-T Ethernet
+* 1x HDMI
+* 2x USB-A
+* 1x 3.5mm headphone jack
 
 ## Erasing a Mac
 
