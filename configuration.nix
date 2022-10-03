@@ -85,15 +85,15 @@
       install -m 0600 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /nix/home/tailscale.token
     '';
 
-  launchd.daemons.prometheus-node-exporter = {
-    script = ''
-      exec ${pkgs.prometheus-node-exporter}/bin/node_exporter
-    '';
-
-    serviceConfig.KeepAlive = true;
-    serviceConfig.StandardErrorPath = "/var/log/prometheus-node-exporter.log";
-    serviceConfig.StandardOutPath = "/var/log/prometheus-node-exporter.log";
-  };
+  #launchd.daemons.prometheus-node-exporter = {
+  #  script = ''
+  #    exec ${pkgs.prometheus-node-exporter}/bin/node_exporter
+  #  '';
+  #
+  #  serviceConfig.KeepAlive = true;
+  #  serviceConfig.StandardErrorPath = "/var/log/prometheus-node-exporter.log";
+  #  serviceConfig.StandardOutPath = "/var/log/prometheus-node-exporter.log";
+  #};
 
   launchd.daemons.tailscaled = {
     script = ''
