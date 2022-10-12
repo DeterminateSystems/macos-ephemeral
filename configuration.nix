@@ -97,7 +97,7 @@
 
   launchd.daemons.tailscaled = {
     script = ''
-      exec ${pkgs.tailscale}/bin/tailscaled
+      exec ${pkgs.tailscale}/bin/tailscaled –state=mem:
     '';
 
     serviceConfig.KeepAlive = true;
