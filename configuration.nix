@@ -36,7 +36,7 @@
 
   services.buildkite-agent = {
     enable = true;
-    meta-data = "mac=1";
+    meta-data = "mac=1,system=${pkgs.system}";
     openssh.privateKeyPath = "/dev/null";
     openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
