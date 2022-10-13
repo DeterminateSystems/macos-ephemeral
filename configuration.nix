@@ -25,6 +25,7 @@
   nix = {
     settings = {
       "extra-experimental-features" = [ "nix-command" "flakes" ];
+      "trusted-users" = [ "root" "ephemeraladmin" ]
     };
 
     nixPath = [
