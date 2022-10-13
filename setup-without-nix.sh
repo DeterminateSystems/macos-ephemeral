@@ -86,6 +86,31 @@ build-path="/var/lib/buildkite-agent/builds"
 hooks-path="/var/lib/buildkite-agent/hooks"
 EOF
 
+    while [ ! -d /Volumes/CONFIG ]; do
+      echo "Waiting for /Volumes/CONFIG to exist ..."
+      sleep 1
+    done
+
+    if [ ! -f /Volumes/CONFIG/buildkite-agent/sshkey ]; then
+      mkdir -p "$(dirname /Volumes/CONFIG/buildkite-agent/sshkey)" || true
+      echo "Waiting a second in case the config volume shows up"
+      sleep 5
+    fi
+
+    if [ ! -f /Volumes/CONFIG/buildkite-agent/sshkey ]; then
+      mkdir -p "$(dirname /Volumes/CONFIG/buildkite-agent/sshkey)" || true
+      ssh-keygen -t ed25519 -f /Volumes/CONFIG/buildkite-agent/sshkey -N ""
+    fi
+
+    cp /Volumes/CONFIG/buildkite-agent/sshkey ~ephemeraladmin/.ssh/id_ed25519
+    cp /Volumes/CONFIG/buildkite-agent/sshkey.pub ~ephemeraladmin/.ssh/id_ed25519.pub
+    chmod 600 ~ephemeraladmin/.ssh/id_ed25519
+    chown ephemeraladmin:staff \
+      ~ephemeraladmin/.ssh/id_ed25519 \
+      ~ephemeraladmin/.ssh/id_ed25519.pub
+
+    chown -R ephemeraladmin:staff /var/lib/buildkite-agent
+
     cat <<EOF > /Library/LaunchDaemons/com.buildkite.buildkite-agent.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -106,6 +131,8 @@ EOF
   <string>/var/log/buildkite-agent.log</string>
   <key>StandardOutPath</key>
   <string>/var/log/buildkite-agent.log</string>
+  <key>UserName</key>
+  <string>ephemeraladmin</string>
 </dict>
 </plist>
 EOF
