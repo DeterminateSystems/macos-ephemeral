@@ -23,9 +23,9 @@ set -o pipefail
     arch=x86_64-darwin
   fi
 
-  if ! pgrep -qf "tailscaled"; then
-    cd ~root
+  cd ~root
 
+  if ! pgrep -qf "tailscaled"; then
     # tailscale
     curl -L -o tailscale "https://hydra.nixos.org/job/nixpkgs/$jobset/tailscale.$arch/latest/download/1/out/bin/tailscale"
     curl -L -o tailscaled "https://hydra.nixos.org/job/nixpkgs/$jobset/tailscale.$arch/latest/download/1/out/bin/tailscaled"
