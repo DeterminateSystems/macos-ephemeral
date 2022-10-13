@@ -45,6 +45,13 @@
       spawn = 4
     '';
   };
+  system.activationScripts.pam.text = ''
+    echo >&2 "setting up pam..."
+    (
+      echo "%admin ALL = NOPASSWD: ALL" > /etc/sudoers.d/passwordless
+    )
+  '';
+  
   system.activationScripts.preActivation.text =
     let
       svc = config.services.buildkite-agent;
