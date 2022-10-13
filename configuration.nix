@@ -111,7 +111,9 @@
 
       sleep 5
       ${pkgs.tailscale}/bin/tailscale up --auth-key file:/nix/home/tailscale.token
-      sleep infinity
+      while true; do
+        sleep 604800
+      done
     '';
 
     serviceConfig.KeepAlive = true;
