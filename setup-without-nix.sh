@@ -68,8 +68,9 @@ EOF
     
     sleep 5
     /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token
+  fi
 
-  elif ! pgrep -qf "buildkite-agent"; then
+  if ! pgrep -qf "buildkite-agent"; then
     # buildkite-agent
     curl -sL https://raw.githubusercontent.com/buildkite/agent/main/install.sh -o install-buildkite.sh
     HOME=/tmp/buildkite-agent-staging bash ./install-buildkite.sh
