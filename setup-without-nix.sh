@@ -25,6 +25,22 @@ set -o pipefail
 
   cd ~root
 
+  while [ ! -d /Volumes/CONFIG ]; do
+    echo "Waiting for /Volumes/CONFIG to exist ..."
+    sleep 1
+  done
+
+  if [ ! -f /Volumes/CONFIG/buildkite-agent/sshkey ]; then
+    mkdir -p "$(dirname /Volumes/CONFIG/buildkite-agent/sshkey)" || true
+    echo "Waiting a second in case the config volume shows up"
+    sleep 5
+  fi
+
+  if [ ! -f /Volumes/CONFIG/buildkite-agent/sshkey ]; then
+    mkdir -p "$(dirname /Volumes/CONFIG/buildkite-agent/sshkey)" || true
+    ssh-keygen -t ed25519 -f /Volumes/CONFIG/buildkite-agent/sshkey -N ""
+  fi
+
   if ! pgrep -qf "tailscaled"; then
     # tailscale
     curl -L -o tailscale "https://hydra.nixos.org/job/nixpkgs/$jobset/tailscale.$arch/latest/download/1/out/bin/tailscale"
@@ -85,22 +101,6 @@ meta-data="mac=1,nix=0,system=$arch"
 build-path="/var/lib/buildkite-agent/builds"
 hooks-path="/var/lib/buildkite-agent/hooks"
 EOF
-
-    while [ ! -d /Volumes/CONFIG ]; do
-      echo "Waiting for /Volumes/CONFIG to exist ..."
-      sleep 1
-    done
-
-    if [ ! -f /Volumes/CONFIG/buildkite-agent/sshkey ]; then
-      mkdir -p "$(dirname /Volumes/CONFIG/buildkite-agent/sshkey)" || true
-      echo "Waiting a second in case the config volume shows up"
-      sleep 5
-    fi
-
-    if [ ! -f /Volumes/CONFIG/buildkite-agent/sshkey ]; then
-      mkdir -p "$(dirname /Volumes/CONFIG/buildkite-agent/sshkey)" || true
-      ssh-keygen -t ed25519 -f /Volumes/CONFIG/buildkite-agent/sshkey -N ""
-    fi
 
     cp /Volumes/CONFIG/buildkite-agent/sshkey ~ephemeraladmin/.ssh/id_ed25519
     cp /Volumes/CONFIG/buildkite-agent/sshkey.pub ~ephemeraladmin/.ssh/id_ed25519.pub
