@@ -53,6 +53,11 @@ set -o pipefail
   <key>RunAtLoad</key>
   <true/>
 
+<key>StandardErrorPath</key>
+<string>/var/log/tailscaled.log</string>
+<key>StandardOutPath</key>
+<string>/var/log/tailscaled.log</string>
+
 </dict>
 </plist>
 EOF
