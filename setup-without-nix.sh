@@ -14,18 +14,17 @@ set -o pipefail
   while ! ping -c1 github.com; do
 	  sleep 1
   done
-  
-  
+
+  if [ "$(uname -m)" = "arm64" ]; then
+    jobset=nixpkgs-unstable-aarch64-darwin
+    arch=aarch64-darwin
+  else
+    jobset=trunk
+    arch=x86_64-darwin
+  fi
+
   if ! pgrep -qf "tailscaled"; then
     cd ~root
-
-    if [ "$(uname -m)" = "arm64" ]; then
-      jobset=nixpkgs-unstable-aarch64-darwin
-      arch=aarch64-darwin
-    else
-      jobset=trunk
-      arch=x86_64-darwin
-    fi
 
     # tailscale
     curl -L -o tailscale "https://hydra.nixos.org/job/nixpkgs/$jobset/tailscale.$arch/latest/download/1/out/bin/tailscale"
@@ -69,7 +68,8 @@ EOF
     
     sleep 5
     /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token
-    
+
+  elif ! pgrep -qf "buildkite-agent"; then
     # buildkite-agent
     curl -sL https://raw.githubusercontent.com/buildkite/agent/main/install.sh -o install-buildkite.sh
     HOME=/tmp/buildkite-agent-staging bash ./install-buildkite.sh
