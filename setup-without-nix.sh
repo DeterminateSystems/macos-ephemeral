@@ -33,6 +33,7 @@ set -o pipefail
 
     mkdir -p /usr/local/bin/
     mv ./tailscaled /usr/local/bin/tailscaled
+    mv ./tailscale /usr/local/bin/tailscale
     
     cat <<EOF > /Library/LaunchDaemons/com.tailscale.tailscaled.plist
     <?xml version="1.0" encoding="UTF-8"?>
@@ -66,6 +67,6 @@ EOF
     launchctl start /Library/LaunchDaemons/com.tailscale.tailscaled.plist || true
     
     sleep 5
-    ./tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token
+    /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token
   fi
 ) 2>&1 | tee -a /var/log/mosyle-bootstrap-script.log
