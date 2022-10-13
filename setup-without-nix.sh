@@ -111,6 +111,9 @@ EOF
 
     chown -R ephemeraladmin:staff /var/lib/buildkite-agent
 
+    touch /var/log/buildkite-agent.log
+    chown ephemeraladmin:staff /var/log/buildkite-agent.log
+
     cat <<EOF > /Library/LaunchDaemons/com.buildkite.buildkite-agent.plist
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
