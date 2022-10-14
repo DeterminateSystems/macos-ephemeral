@@ -43,6 +43,7 @@
     tokenPath = "/nix/home/buildkite.token";
     extraConfig = ''
       spawn = 4
+      tags-from-host=true
     '';
   };
   system.activationScripts.pam.text = ''
