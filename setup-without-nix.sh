@@ -110,6 +110,7 @@ spawn=4
 meta-data="mac=1,nix=0,system=$arch"
 build-path="/var/lib/buildkite-agent/builds"
 hooks-path="/var/lib/buildkite-agent/hooks"
+tags-from-host=true
 EOF
 
     cp /Volumes/CONFIG/buildkite-agent/sshkey ~ephemeraladmin/.ssh/id_ed25519
