@@ -41,6 +41,12 @@ set -o pipefail
     ssh-keygen -t ed25519 -f /Volumes/CONFIG/buildkite-agent/sshkey -N ""
   fi
 
+  # install xcode (for git) ugh
+  # inspired by https://gist.github.com/mokagio/b974620ee8dcf5c0671f
+  # and yes, this file is required, or else the command line tools don't show up in softwareupdate -l
+  touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+  softwareupdate -i "$(softwareupdate -l | grep "\*.*Command Line" | tail -n 1 | sed 's/^[^C]* //')"
+
   if ! pgrep -qf "tailscaled"; then
     # tailscale
     curl -L -o tailscale "https://hydra.nixos.org/job/nixpkgs/$jobset/tailscale.$arch/latest/download/1/out/bin/tailscale"
