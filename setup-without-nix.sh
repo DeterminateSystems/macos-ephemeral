@@ -46,6 +46,10 @@ set -o pipefail
   # and yes, this file is required, or else the command line tools don't show up in softwareupdate -l
   touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
   softwareupdate -i "$(softwareupdate -l | grep "\*.*Command Line" | tail -n 1 | sed 's/^[^C]* //')"
+  if ! git --help &>/dev/null; then
+    # Didn't find command line tools first time, try again?
+    softwareupdate -i "$(softwareupdate -l | grep "\*.*Command Line" | tail -n 1 | sed 's/^[^C]* //')"
+  fi
 
   if ! pgrep -qf "tailscaled"; then
     # tailscale
