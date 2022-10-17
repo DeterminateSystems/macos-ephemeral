@@ -115,7 +115,12 @@ EOF
     cat <<EOF > /var/lib/buildkite-agent/hooks/agent-shutdown
 #!/bin/sh
 
-curl -v http://bonk
+while sleep 1; do
+    for machine in bonk{,-{1,2,3,4,5}}; do
+        curl --connect-timeout 1 -v "http://$machine"
+	sleep 1
+    done
+done
 EOF
     chmod +x /var/lib/buildkite-agent/hooks/agent-shutdown
 
