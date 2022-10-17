@@ -153,5 +153,34 @@ EOF
 
     launchctl load /Library/LaunchDaemons/com.buildkite.buildkite-agent.plist
     launchctl start /Library/LaunchDaemons/com.buildkite.buildkite-agent.plist || true
+
+    # quoted 'EOF' means things don't get evaluated (i.e. the date calls won't get hardcoded)
+    cat <<'EOF' > /Library/LaunchDaemons/com.buildkite.buildkite-agent-restart.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.buildkite.buildkite-agent-restart</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-xc</string>
+    <string>echo "$(date) received restart request"; sleep 1; launchctl unload /Library/LaunchDaemons/com.buildkite.buildkite-agent.plist && launchctl load /Library/LaunchDaemons/com.buildkite.buildkite-agent.plist; echo "$(date) done"</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>/tmp/please-restart-buildkite-agent</string>
+  </array>
+  <key>StandardErrorPath</key>
+  <string>/var/log/buildkite-restart.log</string>
+  <key>StandardOutPath</key>
+  <string>/var/log/buildkite-restart.log</string>
+</dict>
+</plist>
+EOF
+
+    # safe to load since we don't RunAtLoad and rely on a file being written to to run
+    launchctl load /Library/LaunchDaemons/com.buildkite.buildkite-agent-restart.plist
   fi
 ) 2>&1 | tee -a /var/log/mosyle-bootstrap-script.log
