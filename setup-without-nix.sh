@@ -112,7 +112,7 @@ EOF
       ~ephemeraladmin/.ssh/id_ed25519.pub
 
     mkdir -p /var/lib/buildkite-agent/hooks
-    cat <<EOF > /var/lib/buildkite-agent/hooks/agent-shutdown
+    cat <<'EOF' > /var/lib/buildkite-agent/hooks/agent-shutdown
 #!/bin/sh
 
 while sleep 1; do
