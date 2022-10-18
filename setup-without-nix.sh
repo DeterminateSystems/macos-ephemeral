@@ -96,10 +96,12 @@ EOF
     cat <<EOF > /var/lib/buildkite-agent/buildkite-agent.cfg
 token="$(cat /Volumes/CONFIG/buildkite.token)"
 name="%hostname-%n"
-spawn=4
-meta-data="mac=1,nix=0,system=$arch"
+spawn=1
+disconnect-after-job=true
+meta-data="queue=bootstrap,mac=1,nix=0,system=$arch"
 build-path="/var/lib/buildkite-agent/builds"
 hooks-path="/var/lib/buildkite-agent/hooks"
+tags-from-host=true
 EOF
 
     cp /Volumes/CONFIG/buildkite-agent/sshkey ~ephemeraladmin/.ssh/id_ed25519
@@ -108,6 +110,19 @@ EOF
     chown ephemeraladmin:staff \
       ~ephemeraladmin/.ssh/id_ed25519 \
       ~ephemeraladmin/.ssh/id_ed25519.pub
+
+    mkdir -p /var/lib/buildkite-agent/hooks
+    cat <<'EOF' > /var/lib/buildkite-agent/hooks/agent-shutdown
+#!/bin/sh
+
+while sleep 1; do
+    for machine in bonk{,-{1,2,3,4,5}}; do
+        curl --connect-timeout 1 -v "http://$machine"
+	sleep 1
+    done
+done
+EOF
+    chmod +x /var/lib/buildkite-agent/hooks/agent-shutdown
 
     chown -R ephemeraladmin:staff /var/lib/buildkite-agent
 
