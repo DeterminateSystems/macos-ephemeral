@@ -6,6 +6,9 @@
       pkgs.git
     ];
 
+  # https://github.com/LnL7/nix-darwin/pull/552
+  documentation.enable = false;
+
   programs.zsh.enable = true;
   programs.zsh.enableCompletion = false;
   programs.bash.enable = true;
