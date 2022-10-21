@@ -56,7 +56,8 @@ mv "$config/.git-bak" "$config/.git"
 export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs=$nixpkgs:darwin=$darwin
 
 if [ ! -e /etc/static/bashrc ]; then
-yes |    $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n10
+nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$(uname -m)".system --out-link "$config/result"
+"$config/result/sw/bin/darwin-rebuild" switch --flake "$config"#"$(uname -m)"
 fi
 
 if ! hash darwin-rebuild; then
