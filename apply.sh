@@ -53,7 +53,7 @@ mv "$config/.git" "$config/.git-bak"
 nixpkgs=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.nixpkgs)
 darwin=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.darwin)
 mv "$config/.git-bak" "$config/.git"
-export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs="$nixpkgs":darwin="$darwin"
+export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs=$nixpkgs:darwin=$darwin
 
 if [ ! -e /etc/static/bashrc ]; then
 yes |    $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n10
