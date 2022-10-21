@@ -52,13 +52,13 @@ config="/nix/home/darwin-config"
 mv "$config/.git" "$config/.git-bak"
 nixpkgs=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.nixpkgs)
 darwin=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.darwin)
-mv "$config/.git-bak" "$config/.git"
 export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs=$nixpkgs:darwin=$darwin
 
 if [ ! -e /etc/static/bashrc ]; then
-nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$(uname -m)".system --out-link "$config/result"
-"$config/result/sw/bin/darwin-rebuild" switch --flake "$config"#"$(uname -m)"
+    nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$(uname -m)".system --out-link "$config/result"
+    "$config/result/sw/bin/darwin-rebuild" switch --flake "$config"#"$(uname -m)"
 fi
+mv "$config/.git-bak" "$config/.git"
 
 if ! hash darwin-rebuild; then
     set +eux
