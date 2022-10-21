@@ -1,4 +1,4 @@
-{ config, lib, pkgs, darwin ? "", nixpkgs ? "", ... }:
+{ config, lib, pkgs, inputs, ... }:
 {
   environment.systemPackages =
     [
@@ -32,8 +32,8 @@
     };
 
     nixPath = [
-      "nixpkgs=${nixpkgs}"
-      "darwin=${darwin}"
+      "nixpkgs=${inputs.nixpkgs}"
+      "darwin=${inputs.darwin}"
       "darwin-config=/nix/home/darwin-config/configuration.nix"
     ];
   };
