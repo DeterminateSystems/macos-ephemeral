@@ -49,10 +49,10 @@ cd /nix/home/darwin-config
 nix-shell -p git --run "git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FETCH_HEAD"
 
 config="/nix/home/darwin-config/$CONFIG_TARGET"
-mv "$config/.git" "$config/.git-bak"
+mv "/nix/home/darwin-config/.git" "/nix/home/darwin-config/.git-bak"
 nixpkgs="$(nix --extra-experimental-features 'nix-command flakes' eval "$config"#inputs.nixpkgs)"
 darwin="$(nix --extra-experimental-features 'nix-command flakes' eval "$config"#inputs.darwin)"
-mv "$config/.git-bak" "$config/.git"
+mv "/nix/home/darwin-config/.git-bak" "/nix/home/darwin-config/.git"
 export NIX_PATH=darwin-config="$config":nixpkgs="$nixpkgs":darwin="$darwin"
 
 if [ ! -e /etc/static/bashrc ]; then
