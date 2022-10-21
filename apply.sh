@@ -8,6 +8,8 @@ CONFIG_TARGET=$3
 
 #set -x
 
+mv "/nix/home/darwin-config/.git-bak" "/nix/home/darwin-config/.git" || true #FIXME: remove
+
 cd /tmp
 
 while ! ping -c1 nixos.org; do
@@ -51,7 +53,6 @@ nix-shell -p git --run "git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FE
 nix --extra-experimental-features 'nix-command flakes' profile install nixpkgs#git
 
 config="/nix/home/darwin-config"
-mv "$config/.git-bak" "$config/.git" || true #FIXME: remove
 nixpkgs=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.nixpkgs)
 darwin=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.darwin)
 export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs=$nixpkgs:darwin=$darwin
