@@ -1,4 +1,4 @@
-{ config, lib, pkgs, darwin, nixpkgs, ... }:
+{ config, lib, pkgs, darwin ? "", nixpkgs ? "", ... }:
 {
   environment.systemPackages =
     [
