@@ -31,8 +31,7 @@ if ! hash nix; then
     set -eux
 fi
 
-export NIX_PATH=darwin-config="/nix/home/darwin-config/$CONFIG_TARGET":nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
-
+export NIX_PATH=nixpkgs=channel:nixpkgs-unstable
 
 if [ ! -d /nix/home ]; then
     mkdir -p /nix/home
@@ -49,6 +48,10 @@ fi
 cd /nix/home/darwin-config
 nix-shell -p git --run "git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FETCH_HEAD"
 
+nixpkgs="$(nix --extra-experimental-features 'nix-command flakes' eval /nix/home/darwin-config#inputs.nixpkgs)"
+darwin="$(nix --extra-experimental-features 'nix-command flakes' eval /nix/home/darwin-config#inputs.darwin)"
+export NIX_PATH=darwin-config="/nix/home/darwin-config/$CONFIG_TARGET":nixpkgs="$nixpkgs":darwin="$darwin"
+
 if [ ! -e /etc/static/bashrc ]; then
 yes |    $(nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer --no-out-link)/bin/darwin-installer 2>&1 | tail -n10
 fi
@@ -59,10 +62,9 @@ if ! hash darwin-rebuild; then
     set -eux
 fi
 
-export NIX_PATH=darwin-config="/nix/home/darwin-config/$CONFIG_TARGET":nixpkgs=channel:nixpkgs-unstable:darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz
-
 sudo rm /etc/nix/nix.conf || true
 
-darwin-rebuild switch
+export NIX_PATH=darwin-config="/nix/home/darwin-config/$CONFIG_TARGET":nixpkgs="$nixpkgs":darwin="$darwin"
+darwin-rebuild switch --flake /nix/home/darwin-config#"$(uname -m)"
 
 echo "Done!"

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, darwin, nixpkgs, ... }:
 {
   environment.systemPackages =
     [
@@ -32,8 +32,8 @@
     };
 
     nixPath = [
-      "nixpkgs=channel:nixpkgs-unstable"
-      "darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz"
+      "nixpkgs=${nixpkgs}"
+      "darwin=${darwin}"
       "darwin-config=/nix/home/darwin-config/configuration.nix"
     ];
   };
