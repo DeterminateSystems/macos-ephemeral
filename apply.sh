@@ -5,6 +5,7 @@ set -eu
 CONFIG_REPO=$1
 CONFIG_BRANCH=$2
 CONFIG_TARGET=$3
+CONFIG_ARCH=$4 # arm64 or x86_64
 
 #set -x
 
@@ -58,26 +59,12 @@ nix-shell -p git --run "git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FE
 nix --extra-experimental-features 'nix-command flakes' profile install nixpkgs#git
 
 config="/nix/home/darwin-config"
-nixpkgs=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.nixpkgs)
-darwin=$(nix --extra-experimental-features 'nix-command flakes' eval --raw "$config"#inputs.darwin)
-export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs=$nixpkgs:darwin=$darwin
-
-if [ ! -e /etc/static/bashrc ]; then
-    nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$(uname -m)".system --out-link "$config/result"
-    "$config/result/sw/bin/darwin-rebuild" switch --flake "$config"#"$(uname -m)"
-fi
-
-nix --extra-experimental-features 'nix-command flakes' profile remove 0
-
-if ! hash darwin-rebuild; then
-    set +eux
-    . /etc/static/bashrc
-    set -eux
-fi
+nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$CONFIG_ARCH".system --out-link "$config/result"
 
 sudo rm /etc/nix/nix.conf || true
 
-export NIX_PATH=darwin-config="$config/$CONFIG_TARGET":nixpkgs=$nixpkgs:darwin=$darwin
-darwin-rebuild switch --flake "$config"#"$(uname -m)"
+"$config/result/sw/bin/darwin-rebuild" switch --flake "$config"#"$CONFIG_ARCH"
+
+nix profile remove "$(nix profile list | grep git | cut -d' ' -f1)" # remove the git we installed for flakes
 
 echo "Done!"

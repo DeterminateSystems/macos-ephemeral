@@ -30,12 +30,6 @@
       "extra-experimental-features" = [ "nix-command" "flakes" ];
       "trusted-users" = [ "root" "ephemeraladmin" ];
     };
-
-    nixPath = [
-      "nixpkgs=${inputs.nixpkgs}"
-      "darwin=${inputs.darwin}"
-      "darwin-config=/nix/home/darwin-config/configuration.nix"
-    ];
   };
 
   services.buildkite-agent = {
