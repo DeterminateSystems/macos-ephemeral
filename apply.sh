@@ -39,26 +39,23 @@ if ! hash nix; then
     set -eux
 fi
 
-export NIX_PATH=nixpkgs=channel:nixpkgs-unstable
-
 if [ ! -d /nix/home ]; then
     mkdir -p /nix/home
 fi
 
 export HOME=/nix/home
 
-nix-shell -p git 2>&1 | tail -n5
+nix --extra-experimental-features 'nix-command flakes' profile install nixpkgs#git 2>&1 | tail -n5
 if [ ! -d /nix/home/darwin-config ]; then
     cd /nix/home
-    nix-shell -p git --run "git clone $CONFIG_REPO ./darwin-config"
+    git clone $CONFIG_REPO ./darwin-config
 fi
 
-cd /nix/home/darwin-config
-nix-shell -p git --run "git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FETCH_HEAD"
-
-nix --extra-experimental-features 'nix-command flakes' profile install nixpkgs#git
-
 config="/nix/home/darwin-config"
+
+cd "$config"
+git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FETCH_HEAD
+
 nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$CONFIG_ARCH".system --out-link "$config/result"
 
 sudo rm /etc/nix/nix.conf || true
