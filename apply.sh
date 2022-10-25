@@ -2,14 +2,9 @@
 
 set -eu
 
-CONFIG_REPO=$1
-CONFIG_BRANCH=$2
-CONFIG_TARGET=$3
 CONFIG_ARCH=$4 # arm64 or x86_64
 
 #set -x
-
-cd /tmp
 
 while ! ping -c1 nixos.org; do
     sleep 1
@@ -39,29 +34,11 @@ if ! hash nix; then
     set -eux
 fi
 
-if [ ! -d /nix/home ]; then
-    mkdir -p /nix/home
-fi
-
-export HOME=/nix/home
-
-nix --extra-experimental-features 'nix-command flakes' profile install nixpkgs#git 2>&1 | tail -n5
-if [ ! -d /nix/home/darwin-config ]; then
-    cd /nix/home
-    git clone $CONFIG_REPO ./darwin-config
-fi
-
-config="/nix/home/darwin-config"
-
-cd "$config"
-git fetch $CONFIG_REPO $CONFIG_BRANCH && git checkout FETCH_HEAD
-
-nix --extra-experimental-features 'nix-command flakes' build "$config"#darwinConfigurations."$CONFIG_ARCH".system --out-link "$config/result"
+nix --extra-experimental-features 'nix-command flakes' build github:DeterminateSystems/macos-ephemeral#darwinConfigurations."$CONFIG_ARCH".system
 
 sudo rm /etc/nix/nix.conf || true
 
-"$config/result/sw/bin/darwin-rebuild" switch --flake "$config"#"$CONFIG_ARCH"
-
-nix profile remove "$(nix profile list | grep git | cut -d' ' -f1)" # remove the git we installed for flakes
+./result/sw/bin/darwin-rebuild switch --flake github:DeterminateSystems/macos-ephemeral#"$CONFIG_ARCH"
+unlink ./result
 
 echo "Done!"
