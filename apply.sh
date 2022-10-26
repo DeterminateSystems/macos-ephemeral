@@ -36,6 +36,12 @@ if ! hash nix; then
     set -eux
 fi
 
+if [ ! -d /nix/home ]; then
+    mkdir -p /nix/home
+fi
+
+export HOME=/nix/home
+
 # TODO(cole-h): maybe make the ref configurable as well? have to see if darwin-
 # rebuild accepts `darwinConfigurations.asdf` instead of just `asdf`
 nix --extra-experimental-features 'nix-command flakes' build "$CONFIG_FLAKE_URI"#darwinConfigurations."$CONFIG_ARCH".system
