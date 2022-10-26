@@ -2,7 +2,9 @@
 
 set -eu
 
+# FIXME(cole-h): shift arg indexes once everything has been tested to work
 CONFIG_ARCH=$4 # arm64 or x86_64
+CONFIG_FLAKE_URI=$5
 
 #set -x
 
@@ -34,11 +36,13 @@ if ! hash nix; then
     set -eux
 fi
 
-nix --extra-experimental-features 'nix-command flakes' build github:DeterminateSystems/macos-ephemeral#darwinConfigurations."$CONFIG_ARCH".system
+# TODO(cole-h): maybe make the ref configurable as well? have to see if darwin-
+# rebuild accepts `darwinConfigurations.asdf` instead of just `asdf`
+nix --extra-experimental-features 'nix-command flakes' build "$CONFIG_FLAKE_URI"#darwinConfigurations."$CONFIG_ARCH".system
 
 sudo rm /etc/nix/nix.conf || true
 
-./result/sw/bin/darwin-rebuild switch --flake github:DeterminateSystems/macos-ephemeral#"$CONFIG_ARCH"
+./result/sw/bin/darwin-rebuild switch --flake "$CONFIG_FLAKE_URI"#"$CONFIG_ARCH"
 unlink ./result
 
 echo "Done!"
