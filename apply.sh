@@ -2,9 +2,8 @@
 
 set -eu
 
-# FIXME(cole-h): shift arg indexes once everything has been tested to work
-CONFIG_ARCH=$4 # arm64 or x86_64
-CONFIG_FLAKE_URI=$5
+CONFIG_ARCH=$1 # arm64 or x86_64
+CONFIG_FLAKE_URI=$2
 
 #set -x
 
