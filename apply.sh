@@ -2,8 +2,7 @@
 
 set -eu
 
-CONFIG_ARCH=$1 # arm64 or x86_64
-CONFIG_FLAKE_URI=$2
+CONFIG_FLAKE_REF=$1
 
 #set -x
 
@@ -41,13 +40,15 @@ fi
 
 export HOME=/nix/home
 
-# TODO(cole-h): maybe make the ref configurable as well? have to see if darwin-
-# rebuild accepts `darwinConfigurations.asdf` instead of just `asdf`
-nix --extra-experimental-features 'nix-command flakes' build "$CONFIG_FLAKE_URI"#darwinConfigurations."$CONFIG_ARCH".system
+nix --extra-experimental-features 'nix-command flakes' build "$CONFIG_FLAKE_REF"
 
 sudo rm /etc/nix/nix.conf || true
 
-./result/sw/bin/darwin-rebuild switch --flake "$CONFIG_FLAKE_URI"#"$CONFIG_ARCH"
-unlink ./result
+# This is essentially what `darwin-rebuild switch` does.
+profile=/nix/var/nix/profiles/system
+systemConfig="$(readlink -f ./result)"
+nix-env -p "$profile" --set "$systemConfig"
+"$systemConfig/activate-user"
+"$systemConfig/activate"
 
 echo "Done!"
