@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 {
   environment.systemPackages =
     [
@@ -30,12 +30,6 @@
       "extra-experimental-features" = [ "nix-command" "flakes" ];
       "trusted-users" = [ "root" "ephemeraladmin" ];
     };
-
-    nixPath = [
-      "nixpkgs=channel:nixpkgs-unstable"
-      "darwin=https://github.com/LnL7/nix-darwin/archive/master.tar.gz"
-      "darwin-config=/nix/home/darwin-config/configuration.nix"
-    ];
   };
 
   services.buildkite-agent = {
