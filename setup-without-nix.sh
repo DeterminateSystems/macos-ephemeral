@@ -127,7 +127,7 @@ EOF
 
 while sleep 1; do
     for machine in bonk{,-{1,2,3,4,5}}; do
-        curl --connect-timeout 1 -v "http://$machine"
+        curl -X POST --connect-timeout 1 -v "http://$machine/erase-self"
 	sleep 1
     done
 done
