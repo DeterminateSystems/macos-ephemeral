@@ -99,7 +99,7 @@ EOF
 <dict>
 
   <key>Label</key>
-  <string>com.tailscale.tailscaled</string>
+  <string>com.tailscale.tailscale-auth</string>
 
   <key>ProgramArguments</key>
   <array>
