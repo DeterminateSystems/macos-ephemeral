@@ -103,7 +103,7 @@ EOF
 
   <key>ProgramArguments</key>
   <array>
-    <string>sh</string>
+    <string>/bin/sh</string>
     <string>-c</string>
     <string>sleep 5 ; /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token ; sleep infinity</string>
   </array>
