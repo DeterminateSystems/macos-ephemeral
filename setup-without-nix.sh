@@ -91,9 +91,37 @@ EOF
 
     launchctl load /Library/LaunchDaemons/com.tailscale.tailscaled.plist
     launchctl start /Library/LaunchDaemons/com.tailscale.tailscaled.plist || true
-    
-    sleep 5
-    /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token
+
+    cat <<EOF > /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
+    <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <key>Label</key>
+  <string>com.tailscale.tailscaled</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>sh</string>
+    <string>-c</string>
+    <string>sleep 5 ; /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token ; sleep infinity</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+<key>StandardErrorPath</key>
+<string>/var/log/tailscale-auth.log</string>
+<key>StandardOutPath</key>
+<string>/var/log/tailscale-auth.log</string>
+
+</dict>
+</plist>
+EOF
+
+    launchctl load /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
+    launchctl start /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist || true
   fi
 
   if ! pgrep -qf "buildkite-agent"; then
