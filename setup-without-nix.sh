@@ -62,7 +62,7 @@ set -o pipefail
     mv ./tailscale /usr/local/bin/tailscale
     
     cat <<EOF > /Library/LaunchDaemons/com.tailscale.tailscaled.plist
-    <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -93,7 +93,7 @@ EOF
     launchctl start /Library/LaunchDaemons/com.tailscale.tailscaled.plist || true
 
     cat <<EOF > /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
-    <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
