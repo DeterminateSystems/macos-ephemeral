@@ -105,7 +105,7 @@ EOF
   <array>
     <string>/bin/sh</string>
     <string>-c</string>
-    <string>sleep 5 ; /usr/local/bin/tailscale up --auth-key file:/var/root/tailscale.token ; sleep infinity</string>
+    <string>sleep 5 ; /usr/local/bin/tailscale up --auth-key file:/var/root/tailscale.token && (while true; do sleep 2073600; done)</string>
   </array>
 
   <key>RunAtLoad</key>
