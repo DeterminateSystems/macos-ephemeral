@@ -62,7 +62,7 @@ set -o pipefail
     mv ./tailscale /usr/local/bin/tailscale
     
     cat <<EOF > /Library/LaunchDaemons/com.tailscale.tailscaled.plist
-    <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -91,9 +91,38 @@ EOF
 
     launchctl load /Library/LaunchDaemons/com.tailscale.tailscaled.plist
     launchctl start /Library/LaunchDaemons/com.tailscale.tailscaled.plist || true
-    
-    sleep 5
-    /usr/local/bin/tailscale up --auth-key file:/Volumes/CONFIG/tailscale.token
+
+    cat <<EOF > /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+  <key>Label</key>
+  <string>com.tailscale.tailscale-auth</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>-c</string>
+    <string>sleep 5 ; /usr/local/bin/tailscale up --auth-key file:/var/root/tailscale.token && (while true; do sleep 2073600; done)</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+<key>StandardErrorPath</key>
+<string>/var/log/tailscale-auth.log</string>
+<key>StandardOutPath</key>
+<string>/var/log/tailscale-auth.log</string>
+
+</dict>
+</plist>
+EOF
+
+    install -m 0400 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /var/root/tailscale.token
+    launchctl load /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
+    launchctl start /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist || true
   fi
 
   if ! pgrep -qf "buildkite-agent"; then
