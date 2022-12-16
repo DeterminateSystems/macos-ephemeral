@@ -44,17 +44,38 @@ set -o pipefail
   # We unconditionally do this vault thing, _IF_ the secret_id file exists and is readable
   if test -r /Volumes/CONFIG/secret_id; then
     export VAULT_ADDR=https://vault.detsys.dev:8200
-    export ROLE_ID="$(echo "$(hostname)" | sed 's@mac-\(.*\)\.local@\1@').macos.detsys.dev"
+    export ROLE_ID_FILE="/Volumes/CONFIG/role_id"
     export SECRET_ID_FILE="/Volumes/CONFIG/secret_id"
-    export VAULT_TOKEN="$(vault write -field=token auth/internalservices/macos/approle/login role_id="$ROLE_ID" secret_id=@"$SECRET_ID_FILE")"
+
+    export AUTH_PATH
+    export SIGN_PATH
+    export ROLE
+
+    # Yes, this is ugly, but it's necessary; there's no other easy way to
+    # distinguish between the foundation and detsys macs.
+    if grep -q foundation "$ROLE_ID_FILE"; then
+      AUTH_PATH=auth/internalservices/macos_foundation/approle/login
+      SIGN_PATH=internalservices/macos_foundation/ssh_host_keys/sign/host
+      ROLE=internalservices_macos_foundation_ssh_host_key_signer
+    else
+      AUTH_PATH=auth/internalservices/macos/approle/login
+      SIGN_PATH=internalservices/macos/ssh_host_keys/sign/host
+      ROLE=internalservices_macos_ssh_host_key_signer
+    fi
+
+    export VAULT_TOKEN="$(vault write -field=token "$AUTH_PATH" role_id=@"$ROLE_ID_FILE" secret_id=@"$SECRET_ID_FILE")"
+    unset AUTH_PATH
     unset SECRET_ID_FILE
     unset ROLE_ID
-    export VAULT_TOKEN="$(vault token create -field=token -role=internalservices_macos_ssh_host_key_signer)"
-    vault write -field=signed_key internalservices/macos/ssh_host_keys/sign/host cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub
+    export VAULT_TOKEN="$(vault token create -field=token -role="$ROLE")"
+    unset ROLE
+    vault write -field=signed_key "$SIGN_PATH" cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub
     unset VAULT_TOKEN
+    unset SIGN_PATH
     echo "HostCertificate /etc/ssh/ssh_host_rsa_key.signed.pub" > /etc/ssh/sshd_config.d/001-ca-cert.conf
     launchctl stop com.openssh.sshd
     launchctl start com.openssh.sshd
+    ssh-keyscan -c localhost
   else
     echo "Device does not have a secret_id! Exiting."
     exit 1
