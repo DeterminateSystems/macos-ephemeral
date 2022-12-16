@@ -38,6 +38,18 @@ set -o pipefail
     mv ./vault /usr/local/bin/vault
   fi
 
+  if ! test -f /etc/ssh/ssh_host_rsa_key.pub; then
+    echo "loading ssh because host pubkey does not exist"
+    launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+
+    max=20
+    while ! test -f /etc/ssh/ssh_host_rsa_key.pub; do
+      echo "waiting for /etc/ssh/ssh_host_rsa_key.pub to show up... trying $max more times"
+      ((max--))
+      sleep 3
+    done
+  fi
+
   # Don't accidentally leak any vault secrets
   set +x
 
