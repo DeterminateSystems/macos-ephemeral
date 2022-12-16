@@ -30,12 +30,19 @@ set -o pipefail
 
   # If vault isn't already available (i.e. via Nixpkgs), and it doesn't exist at
   # that path, then get it from Hydra
-  if ! vault version &>/dev/null && ! test -f /usr/local/bin/vault; then
-    curl -L -o vault "https://hydra.nixos.org/job/nixpkgs/$jobset/vault.$arch/latest/download/1/out/bin/vault"
-    chmod +x ./vault
+  export VAULT
+  if ! hash vault; then
+    if ! test -f /usr/local/bin/vault; then
+      curl -L -o vault "https://hydra.nixos.org/job/nixpkgs/$jobset/vault.$arch/latest/download/1/out/bin/vault"
+      chmod +x ./vault
 
-    mkdir -p /usr/local/bin/
-    mv ./vault /usr/local/bin/vault
+      mkdir -p /usr/local/bin/
+      mv ./vault /usr/local/bin/vault
+    fi
+
+    VAULT=/usr/local/bin/vault
+  else
+    VAULT="$(command -v vault)"
   fi
 
   if ! test -f /etc/ssh/ssh_host_rsa_key.pub; then
@@ -75,13 +82,13 @@ set -o pipefail
       ROLE=internalservices_macos_ssh_host_key_signer
     fi
 
-    export VAULT_TOKEN="$(vault write -field=token "$AUTH_PATH" role_id=@"$ROLE_ID_FILE" secret_id=@"$SECRET_ID_FILE")"
+    export VAULT_TOKEN="$($VAULT write -field=token "$AUTH_PATH" role_id=@"$ROLE_ID_FILE" secret_id=@"$SECRET_ID_FILE")"
     unset AUTH_PATH
     unset SECRET_ID_FILE
     unset ROLE_ID
-    export VAULT_TOKEN="$(vault token create -field=token -role="$ROLE")"
+    export VAULT_TOKEN="$($VAULT token create -field=token -role="$ROLE")"
     unset ROLE
-    vault write -field=signed_key "$SIGN_PATH" cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub
+    $VAULT write -field=signed_key "$SIGN_PATH" cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub
     unset VAULT_TOKEN
     unset SIGN_PATH
     echo "HostCertificate /etc/ssh/ssh_host_rsa_key.signed.pub" > /etc/ssh/sshd_config.d/001-ca-cert.conf
