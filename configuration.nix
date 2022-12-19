@@ -4,6 +4,7 @@
     [
       config.nix.package
       pkgs.git
+      pkgs.vault
     ];
 
   # https://github.com/LnL7/nix-darwin/pull/552
@@ -43,6 +44,7 @@
       tags-from-host=true
     '';
   };
+
   system.activationScripts.pam.text = ''
     echo >&2 "setting up pam..."
     (
