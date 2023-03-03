@@ -10,7 +10,7 @@ set -o pipefail
   ls /Volumes/CONFIG || true
 
   while ! ping -c1 github.com; do
-	  sleep 1
+    sleep 1
   done
 
   if [ "$(uname -m)" = "arm64" ]; then
@@ -86,11 +86,12 @@ set -o pipefail
     unset AUTH_PATH
     unset SECRET_ID_FILE
     unset ROLE_ID
+    # TODO: do foundation macs have tailscale too?
+    $VAULT read -field=key internalservices/macos/tailscale/key > /nix/home/tailscale.token
+
     export VAULT_TOKEN="$($VAULT token create -field=token -role="$ROLE")"
     unset ROLE
     $VAULT write -field=signed_key "$SIGN_PATH" cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub
-    # TODO: do foundation macs have tailscale too?
-    $VAULT read -field=key internalservices/macos/tailscale/key > /nix/home/tailscale.token
     unset VAULT_TOKEN
     unset SIGN_PATH
     echo "HostCertificate /etc/ssh/ssh_host_rsa_key.signed.pub" > /etc/ssh/sshd_config.d/001-ca-cert.conf
