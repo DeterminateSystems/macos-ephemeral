@@ -90,7 +90,6 @@
         ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519.pub
 
       install -m 0600 -o ${toString buildkite-agent.uid} -g ${toString buildkite-agent.gid} /Volumes/CONFIG/buildkite.token '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
-      install -m 0600 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /nix/home/tailscale.token
     '';
 
   #launchd.daemons.prometheus-node-exporter = {

@@ -120,7 +120,6 @@ EOF
 </plist>
 EOF
 
-    install -m 0400 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /var/root/tailscale.token
     launchctl load /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
     launchctl start /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist || true
   fi
