@@ -87,7 +87,9 @@ set -o pipefail
     unset SECRET_ID_FILE
     unset ROLE_ID
     # TODO: do foundation macs have tailscale too?
-    $VAULT read -field=key internalservices/macos/tailscale/key > /nix/home/tailscale.token
+    if ! grep -q foundation "$ROLE_ID_FILE" ; then
+      $VAULT read -field=key internalservices/macos/tailscale/key tags=tag:ephemeral-mac-ci > /nix/home/tailscale.token
+    fi
 
     export VAULT_TOKEN="$($VAULT token create -field=token -role="$ROLE")"
     unset ROLE
