@@ -52,7 +52,7 @@ set -o pipefail
     max=20
     while ! test -f /etc/ssh/ssh_host_rsa_key.pub; do
       echo "waiting for /etc/ssh/ssh_host_rsa_key.pub to show up... trying $max more times"
-      ((max--))
+      [[ $((--max)) -gt 0 ]] || break
       sleep 3
     done
   fi
