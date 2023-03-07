@@ -88,7 +88,7 @@ set -o pipefail
     unset ROLE_ID
     (set -x
     if ! grep -q foundation "$ROLE_ID_FILE" ; then
-      $VAULT read -field=key internalservices/macos/tailscale/key tags=tag:ephemeral-mac-ci > /nix/home/tailscale.token
+      $VAULT read -field=key internalservices/macos/tailscale/key tags=tag:ephemeral-mac-ci ephemeral=true > /nix/home/tailscale.token
     fi
     )
 
