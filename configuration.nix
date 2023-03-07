@@ -5,6 +5,7 @@
       config.nix.package
       pkgs.git
       pkgs.vault
+      pkgs.tailscale
     ];
 
   # https://github.com/LnL7/nix-darwin/pull/552
@@ -51,7 +52,7 @@
       echo "%admin ALL = NOPASSWD: ALL" > /etc/sudoers.d/passwordless
     )
   '';
-  
+
   system.activationScripts.preActivation.text =
     let
       svc = config.services.buildkite-agent;
@@ -64,13 +65,13 @@
         echo "Waiting for /Volumes/CONFIG to exist ..."
         sleep 1
       done
-      
+
       if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
         mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
         echo "Waiting a second in case the config volume shows up"
         sleep 5
       fi
-      
+
       if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
         mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
         ssh-keygen -t ed25519 -f ${lib.escapeShellArg ssh_key} -N ""
