@@ -86,9 +86,11 @@ set -o pipefail
     unset AUTH_PATH
     unset SECRET_ID_FILE
     unset ROLE_ID
+    (set -x
     if ! grep -q foundation "$ROLE_ID_FILE" ; then
       $VAULT read -field=key internalservices/macos/tailscale/key tags=tag:ephemeral-mac-ci > /nix/home/tailscale.token
     fi
+    )
 
     export VAULT_TOKEN="$($VAULT token create -field=token -role="$ROLE")"
     unset ROLE
