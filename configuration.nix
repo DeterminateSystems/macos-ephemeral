@@ -118,7 +118,7 @@
       set -eux
 
       sleep 5
-      ${pkgs.tailscale}/bin/tailscale up --accept-routes --auth-key file:/nix/home/tailscale.token
+      ${pkgs.tailscale}/bin/tailscale up --accept-routes --auth-key file:/var/root/tailscale.token
       while true; do
         sleep 604800
       done
