@@ -104,11 +104,13 @@ EOF
   <key>ProgramArguments</key>
   <array>
     <string>/bin/sh</string>
-    <string>-c</string>
+    <string>-xc</string>
     <string>sleep 5 ; /usr/local/bin/tailscale up --accept-routes --auth-key file:/var/root/tailscale.token && (while true; do sleep 2073600; done)</string>
   </array>
 
   <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
   <true/>
 
 <key>StandardErrorPath</key>
