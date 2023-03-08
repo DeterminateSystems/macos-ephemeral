@@ -316,6 +316,18 @@ Note that right now this code assumes you're installing everything for DetSys pu
 It is an explicit goal for this repository to support configuring things for *your* purposes without necessarily having to fork the repo.
 Please open issues discussing or send PRs improving this.
 
+#### Tailscale Token
+
+First configure a tag to assign to ephemeral macs, by adding this to your Tailscale ACL:
+
+```json
+	"tagOwners": {
+		"tag:ephemeral-mac-ci": ["you@example.com"],
+	}
+```
+
+The actual acquisition of pre-auth tokens is done through Vault on our systems (see `setup-vault.sh`).
+
 #### Buildkite Token
 
 Save the buildkite agent token into `/Volumes/CONFIG/buildkite.token`.
