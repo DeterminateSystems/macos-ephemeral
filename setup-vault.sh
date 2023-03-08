@@ -10,7 +10,7 @@ set -o pipefail
   ls /Volumes/CONFIG || true
 
   while ! ping -c1 github.com; do
-	  sleep 1
+    sleep 1
   done
 
   if [ "$(uname -m)" = "arm64" ]; then
@@ -52,7 +52,7 @@ set -o pipefail
     max=20
     while ! test -f /etc/ssh/ssh_host_rsa_key.pub; do
       echo "waiting for /etc/ssh/ssh_host_rsa_key.pub to show up... trying $max more times"
-      ((max--))
+      [[ $((--max)) -gt 0 ]] || break
       sleep 3
     done
   fi
@@ -86,6 +86,13 @@ set -o pipefail
     unset AUTH_PATH
     unset SECRET_ID_FILE
     unset ROLE_ID
+    (set -x
+     umask 077
+     if ! grep -q foundation "$ROLE_ID_FILE" ; then
+       $VAULT read -field=key internalservices/macos/tailscale/key tags=tag:ephemeral-mac-ci ephemeral=true > /var/root/tailscale.token
+     fi
+    )
+
     export VAULT_TOKEN="$($VAULT token create -field=token -role="$ROLE")"
     unset ROLE
     $VAULT write -field=signed_key "$SIGN_PATH" cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub

@@ -318,9 +318,7 @@ Please open issues discussing or send PRs improving this.
 
 #### Tailscale Token
 
-The tailscale token should be configured as follows.
-
-First configure a tag to assign to ephemeral macs, by adding this to your ACL:
+First configure a tag to assign to ephemeral macs, by adding this to your Tailscale ACL:
 
 ```json
 	"tagOwners": {
@@ -328,13 +326,7 @@ First configure a tag to assign to ephemeral macs, by adding this to your ACL:
 	}
 ```
 
-1. Visit https://login.tailscale.com/admin/settings/keys
-1. Click `Generate Auth Key`
-1. Enable `Reusable`
-1. Enable `Ephemeral`
-1. Enable `Tags`, and assign the `ephemeral-mac-ci` tag.
-
-Save the generated token into `/Volumes/CONFIG/tailscale.token`.
+The actual acquisition of pre-auth tokens is done through Vault on our systems (see `setup-vault.sh`).
 
 #### Buildkite Token
 

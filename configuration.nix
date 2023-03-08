@@ -5,6 +5,7 @@
       config.nix.package
       pkgs.git
       pkgs.vault
+      pkgs.tailscale
     ];
 
   # https://github.com/LnL7/nix-darwin/pull/552
@@ -51,7 +52,7 @@
       echo "%admin ALL = NOPASSWD: ALL" > /etc/sudoers.d/passwordless
     )
   '';
-  
+
   system.activationScripts.preActivation.text =
     let
       svc = config.services.buildkite-agent;
@@ -64,13 +65,13 @@
         echo "Waiting for /Volumes/CONFIG to exist ..."
         sleep 1
       done
-      
+
       if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
         mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
         echo "Waiting a second in case the config volume shows up"
         sleep 5
       fi
-      
+
       if [ ! -f ${lib.escapeShellArg ssh_key} ]; then
         mkdir -p "$(dirname ${lib.escapeShellArg ssh_key})" || true
         ssh-keygen -t ed25519 -f ${lib.escapeShellArg ssh_key} -N ""
@@ -90,7 +91,6 @@
         ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519.pub
 
       install -m 0600 -o ${toString buildkite-agent.uid} -g ${toString buildkite-agent.gid} /Volumes/CONFIG/buildkite.token '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
-      install -m 0600 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /nix/home/tailscale.token
     '';
 
   #launchd.daemons.prometheus-node-exporter = {
@@ -118,7 +118,7 @@
       set -eux
 
       sleep 5
-      ${pkgs.tailscale}/bin/tailscale up --accept-routes --auth-key file:/nix/home/tailscale.token
+      ${pkgs.tailscale}/bin/tailscale up --accept-routes --auth-key file:/var/root/tailscale.token
       while true; do
         sleep 604800
       done

@@ -104,11 +104,13 @@ EOF
   <key>ProgramArguments</key>
   <array>
     <string>/bin/sh</string>
-    <string>-c</string>
+    <string>-xc</string>
     <string>sleep 5 ; /usr/local/bin/tailscale up --accept-routes --auth-key file:/var/root/tailscale.token && (while true; do sleep 2073600; done)</string>
   </array>
 
   <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
   <true/>
 
 <key>StandardErrorPath</key>
@@ -120,7 +122,6 @@ EOF
 </plist>
 EOF
 
-    install -m 0400 -o 0 -g 0 /Volumes/CONFIG/tailscale.token /var/root/tailscale.token
     launchctl load /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist
     launchctl start /Library/LaunchDaemons/com.tailscale.tailscale-auth.plist || true
   fi
