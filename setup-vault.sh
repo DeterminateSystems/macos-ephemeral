@@ -46,7 +46,9 @@ set -o pipefail
   fi
 
   if ! test -f /etc/ssh/ssh_host_rsa_key.pub; then
-    echo "loading ssh because host pubkey does not exist"
+    echo "un/reloading ssh because host pubkey does not exist"
+    # /usr/libexec/sshd-keygen-wrapper
+    launchctl unload -w /System/Library/LaunchDaemons/ssh.plist
     launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
     max=200
