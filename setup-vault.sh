@@ -46,10 +46,12 @@ set -o pipefail
   fi
 
   if ! test -f /etc/ssh/ssh_host_rsa_key.pub; then
-    echo "loading ssh because host pubkey does not exist"
+    echo "generating host keys because they don't exist"
+    ssh-keygen -A
+    echo "loading ssh because host pubkeys don't exist"
     launchctl load -w /System/Library/LaunchDaemons/ssh.plist
 
-    max=50
+    max=30
     while ! test -f /etc/ssh/ssh_host_rsa_key.pub; do
       echo "waiting for /etc/ssh/ssh_host_rsa_key.pub to show up... trying $max more times"
       [[ $((--max)) -gt 0 ]] || break
