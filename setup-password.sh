@@ -6,9 +6,6 @@ set -o pipefail
 (
   date
 
-  ls /Volumes || true
-  ls /Volumes/CONFIG || true
-
   while ! ping -c1 github.com; do
     sleep 1
   done
@@ -45,20 +42,6 @@ set -o pipefail
     VAULT="$(command -v vault)"
   fi
 
-  if ! test -f /etc/ssh/ssh_host_rsa_key.pub; then
-    echo "generating host keys because they don't exist"
-    ssh-keygen -A
-    echo "loading ssh because host pubkeys don't exist"
-    launchctl load -w /System/Library/LaunchDaemons/ssh.plist
-
-    max=30
-    while ! test -f /etc/ssh/ssh_host_rsa_key.pub; do
-      echo "waiting for /etc/ssh/ssh_host_rsa_key.pub to show up... trying $max more times"
-      [[ $((--max)) -gt 0 ]] || break
-      sleep 3
-    done
-  fi
-
   # Don't accidentally leak any vault secrets
   set +x
 
@@ -69,45 +52,30 @@ set -o pipefail
     export SECRET_ID_FILE="/Volumes/CONFIG/secret_id"
 
     export AUTH_PATH
-    export SIGN_PATH
-    export ROLE
 
     # Yes, this is ugly, but it's necessary; there's no other easy way to
     # distinguish between the foundation and detsys macs.
     if grep -q foundation "$ROLE_ID_FILE"; then
       AUTH_PATH=auth/internalservices/macos_foundation/approle/login
-      SIGN_PATH=internalservices/macos_foundation/ssh_host_keys/sign/host
-      ROLE=internalservices_macos_foundation_ssh_host_key_signer
     else
       AUTH_PATH=auth/internalservices/macos/approle/login
-      SIGN_PATH=internalservices/macos/ssh_host_keys/sign/host
-      ROLE=internalservices_macos_ssh_host_key_signer
     fi
 
     export VAULT_TOKEN="$($VAULT write -field=token "$AUTH_PATH" role_id=@"$ROLE_ID_FILE" secret_id=@"$SECRET_ID_FILE")"
     unset AUTH_PATH
     unset SECRET_ID_FILE
-    (set -x
-     umask 077
-     if ! grep -q foundation "$ROLE_ID_FILE" ; then
-       $VAULT read -field=key internalservices/macos/tailscale/key tags=tag:ephemeral-mac-ci ephemeral=true > /var/root/tailscale.token
-     fi
-    )
-    unset ROLE_ID_FILE
 
-    export VAULT_TOKEN="$($VAULT token create -field=token -role="$ROLE")"
-    unset ROLE
-    $VAULT write -field=signed_key "$SIGN_PATH" cert_type=host public_key=@/etc/ssh/ssh_host_rsa_key.pub > /etc/ssh/ssh_host_rsa_key.signed.pub
-    unset VAULT_TOKEN
-    unset SIGN_PATH
-    echo "HostCertificate /etc/ssh/ssh_host_rsa_key.signed.pub" > /etc/ssh/sshd_config.d/001-ca-cert.conf
-    launchctl stop com.openssh.sshd
-    launchctl start com.openssh.sshd
-    ssh-keyscan -c localhost
+    $VAULT kv put internalservices/macos/kv/"$(cat ROLE_ID_FILE)"/password password=@"$EPHEMERALADMIN_PASSWORD_FILE"
+    rm "$EPHEMERALADMIN_PASSWORD_FILE"
+    unset EPHEMERALADMIN_PASSWORD_FILE
+    unset ROLE_ID_FILE
   else
     echo "Device does not have a secret_id! Exiting."
     exit 1
   fi
 
   set -x
-) 2>&1 | tee -a /var/log/mosyle-vault-script.log
+
+  # We'll get vault somewhere in the setup-vault.sh script
+  rm $VAULT
+) 2>&1 | tee -a /var/log/mosyle-password-script.log
