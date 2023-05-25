@@ -65,7 +65,8 @@ set -o pipefail
     unset AUTH_PATH
     unset SECRET_ID_FILE
 
-    $VAULT kv patch internalservices/macos/kv/"$(cat $ROLE_ID_FILE)"/password ephemeraladmin=@"$EPHEMERALADMIN_PASSWORD_FILE"
+    $VAULT kv patch internalservices/macos/kv/"$(cat $ROLE_ID_FILE)"/password ephemeraladmin=@"$EPHEMERALADMIN_PASSWORD_FILE" \
+     || $VAULT kv put internalservices/macos/kv/"$(cat $ROLE_ID_FILE)"/password ephemeraladmin=@"$EPHEMERALADMIN_PASSWORD_FILE"
     rm "$EPHEMERALADMIN_PASSWORD_FILE"
     unset EPHEMERALADMIN_PASSWORD_FILE
     unset ROLE_ID_FILE
