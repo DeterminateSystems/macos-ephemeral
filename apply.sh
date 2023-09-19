@@ -6,7 +6,7 @@ CONFIG_FLAKE_REF=$1
 
 #set -x
 
-while ! ping -c1 nixos.org; do
+while ! ping -c1 github.com; do
     sleep 1
 done
 
@@ -23,9 +23,9 @@ if [ ! -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
     #curl -L -o install.xz https://hydra.nixos.org/job/nix/master/binaryTarball.aarch64-darwin/latest/download/1
     #tar -xf install.xz
     #cd nix-*
-    
-    curl -Lo install https://nixos.org/nix/install
-    time sh ./install --daemon 2>&1 | tail -n5
+
+    curl -Lo install https://install.determinate.systems/nix
+    time sh ./install install --no-confirm 2>&1 | tail -n5
 fi
 
 if ! hash nix; then
