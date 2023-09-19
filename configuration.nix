@@ -34,14 +34,12 @@
     };
   };
 
-  services.buildkite-agent = {
+  services.buildkite-agents.agent = {
     enable = true;
-    meta-data = "mac=1,nix=1,system=${pkgs.system}";
-    openssh.privateKeyPath = "/dev/null";
-    openssh.publicKeyPath = "/dev/null";
     tokenPath = "/nix/home/buildkite.token";
     extraConfig = ''
       spawn = 4
+      meta-data = "mac=1,nix=1,system=${pkgs.system}";
       tags-from-host=true
     '';
   };
@@ -55,7 +53,6 @@
 
   system.activationScripts.preActivation.text =
     let
-      svc = config.services.buildkite-agent;
       buildkite-agent = config.users.users.buildkite-agent;
 
       ssh_key = "/Volumes/CONFIG/buildkite-agent/sshkey";
@@ -90,7 +87,7 @@
         ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519 \
         ${lib.escapeShellArg buildkite-agent.home}/.ssh/id_ed25519.pub
 
-      install -m 0600 -o ${toString buildkite-agent.uid} -g ${toString buildkite-agent.gid} /Volumes/CONFIG/buildkite.token '${lib.escapeShellArg config.services.buildkite-agent.tokenPath}'
+      install -m 0600 -o ${toString buildkite-agent.uid} -g ${toString buildkite-agent.gid} /Volumes/CONFIG/buildkite.token '${lib.escapeShellArg config.services.buildkite-agents.agent.tokenPath}'
     '';
 
   #launchd.daemons.prometheus-node-exporter = {
