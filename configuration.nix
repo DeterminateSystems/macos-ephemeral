@@ -39,7 +39,7 @@
     tokenPath = "/nix/home/buildkite.token";
     extraConfig = ''
       spawn = 4
-      meta-data = "mac=1,nix=1,system=${pkgs.system}";
+      meta-data = "mac=1,nix=1,system=${pkgs.system}"
       tags-from-host=true
     '';
   };
