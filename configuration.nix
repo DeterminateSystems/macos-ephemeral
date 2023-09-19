@@ -18,12 +18,12 @@
 
   #services.activate-system.enable = true;
 
-  users.knownUsers = [ "buildkite-agent" ];
-  users.knownGroups = [ "buildkite-agent" ];
-  users.groups.buildkite-agent.gid = 531;
-  users.users.buildkite-agent.uid = 531;
-  users.users.buildkite-agent.gid = config.users.groups.buildkite-agent.gid;
-  users.users.buildkite-agent.shell = "/bin/sh";
+  users.knownUsers = [ "buildkite-agent-agent" ];
+  users.knownGroups = [ "buildkite-agent-agent" ];
+  users.groups.buildkite-agent-agent.gid = 531;
+  users.users.buildkite-agent-agent.uid = 531;
+  users.users.buildkite-agent-agent.gid = config.users.groups.buildkite-agent-agent.gid;
+  users.users.buildkite-agent-agent.shell = "/bin/sh";
 
   services.nix-daemon.enable = true;
 
@@ -53,7 +53,7 @@
 
   system.activationScripts.preActivation.text =
     let
-      buildkite-agent = config.users.users.buildkite-agent;
+      buildkite-agent = config.users.users.buildkite-agent-agent;
 
       ssh_key = "/Volumes/CONFIG/buildkite-agent/sshkey";
     in
