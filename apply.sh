@@ -10,8 +10,6 @@ while ! ping -c1 github.com; do
     sleep 1
 done
 
-export HOME=/root
-
 # mostly from darwin-installer: https://github.com/LnL7/nix-darwin/blob/d3d7db7b86c8a2f3fa9925fe5d38d29025e7cb7f/pkgs/darwin-installer/installer.nix#L40-L48
 if ! grep -q '^run\b' /etc/synthetic.conf 2>/dev/null; then
     printf "run\tprivate/var/run\n" | sudo tee -a /etc/synthetic.conf >/dev/null
