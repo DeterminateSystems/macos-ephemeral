@@ -2,7 +2,6 @@
 {
   environment.systemPackages =
     [
-      config.nix.package
       pkgs.git
       pkgs.vault
       pkgs.tailscale
