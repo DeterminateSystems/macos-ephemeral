@@ -41,6 +41,8 @@ export HOME=/nix/home
 nix --extra-experimental-features 'nix-command flakes' build "$CONFIG_FLAKE_REF"
 
 sudo rm /etc/nix/nix.conf || true
+sudo rm /etc/zshrc || true
+sudo rm /etc/bashrc || true
 
 # This is essentially what `darwin-rebuild switch` does.
 profile=/nix/var/nix/profiles/system
