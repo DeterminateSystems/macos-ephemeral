@@ -42,6 +42,7 @@ nix --extra-experimental-features 'nix-command flakes' build "$CONFIG_FLAKE_REF"
 
 sudo rm -f /etc/nix/nix.conf
 sudo rm -f /etc/zshrc
+sudo rm -f /etc/zshenv
 sudo rm -f /etc/bashrc
 
 # This is essentially what `darwin-rebuild switch` does.
