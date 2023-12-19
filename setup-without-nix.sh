@@ -156,13 +156,21 @@ EOF
 #!/bin/sh
 
 while sleep 1; do
-    for machine in bonk{,-{1,2,3,4,5}}; do
-        curl -X POST --connect-timeout 1 -v "http://$machine/erase-self"
-	sleep 1
-    done
+  for machine in bonk{,-{1,2,3,4,5}}; do
+    curl -X POST --connect-timeout 1 -v "http://$machine/erase-self"
+    sleep 1
+  done
 done
 EOF
     chmod +x /var/lib/buildkite-agent/hooks/agent-shutdown
+
+    cat <<'EOF' > /var/lib/buildkite-agent/hooks/environment
+#!/bin/sh
+if [[ $BUILDKITE_BRANCH =~ pull/* ]]; then
+  export BUILDKITE_REFSPEC="+$BUILDKITE_BRANCH:refs/remotes/origin/$BUILDKITE_BRANCH"
+fi
+EOF
+    chmod +x /var/lib/buildkite-agent/hooks/environment
 
     chown -R ephemeraladmin:staff /var/lib/buildkite-agent
 
