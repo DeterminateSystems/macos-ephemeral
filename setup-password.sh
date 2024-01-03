@@ -47,7 +47,7 @@ set -o pipefail
 
   # We unconditionally do this vault thing, _IF_ the secret_id file exists and is readable
   if test -r /Volumes/CONFIG/secret_id; then
-    export VAULT_ADDR=https://vault-ipv6.detsys.dev:8200
+    export VAULT_ADDR=https://vault-ipv6.detsys.dev
     export ROLE_ID_FILE="/Volumes/CONFIG/role_id"
     export SECRET_ID_FILE="/Volumes/CONFIG/secret_id"
 
