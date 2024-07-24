@@ -41,6 +41,14 @@
       meta-data = "mac=1,nix=1,system=${pkgs.system}"
       tags-from-host=true
     '';
+
+    hooks = {
+      "environment" = ''
+        if [[ $BUILDKITE_BRANCH =~ pull/* ]]; then
+          export BUILDKITE_REFSPEC="+$BUILDKITE_BRANCH:refs/remotes/origin/$BUILDKITE_BRANCH"
+        fi
+      '';
+    };
   };
 
   system.activationScripts.pam.text = ''
